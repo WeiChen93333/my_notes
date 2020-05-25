@@ -12,9 +12,14 @@ npm i docsify-cli -g
 
 进入文件夹, 执行 ``docsify init ./docs``
 
-(3) 执行 ``docsify serve docs`` 启动项目, 即可在 [http://localhost:3000](http://localhost:3000/) 看到效果
+(3) 执行 ``docsify serve docs`` 启动项目, 即可在 [http://localhost:3000](http://localhost:********/) 看到效果
 
 ### 配置
+- 在 _sidebar.md 中, 地址是绝对路径, / 前面省略的是 docs; 后面不写代表 "首页", 也就是 README.md; 如果子级文件夹中没有 README.md, _sidebar.md 等, 那么将使用父级文件夹中的
+  ```
+  * [Home](/javascript/)
+  * [递归](/javascript/递归.md)
+  ```
 
 ### 与 github pages 协作
 
