@@ -54,12 +54,16 @@
 ```
 - 处理 POST 请求
 ```
-    else if(method == 'POST'){      
+    else if(method == 'POST'){     
+      let postData = '' 
       req.on('data', (chunk)=> {
-        let postData = JSON.parse(chunk)                     
-      })        
+        postData += chunk.toString()       
+      })
+      req.on('end', ()=> {
+        //在此处理 postData      
+      })       
     }
-    //chunk 是 Buffer 实例, typeof 是 object, 使用 JSON.parse(chunk) 或 chunk.toString 可以看到数据原本的样子, 但是有些许区别, 前者是数据对象, 后者是数据字符串
+    //chunk 是 Buffer 实例, typeof 是 object, 使用 chunk.toString 累加, 得到 JSON 字符串, 使用 JSON.parse(postData) 即可得到原本的数据
 ```
 - 发送 PUT 请求: 和 POST 一样
 客户端提供改变后的完整资源

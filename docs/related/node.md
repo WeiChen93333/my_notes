@@ -4,10 +4,32 @@
 简单来说 node filename.js 命令的意思就是在服务器端执行执行 js 文件, 和用 apache 跑 php 一个意思, 但是 js 只能跑在 node 上, 而其他后台语言可以跑在各种服务器环境中*
 
 ### 二、node中的模块化
-Node.js 规定一个 js 文件就是一个模块, 模块内部定义的变量和函数默认情况下外部无法得到(通过立即执行函数形成的闭包), 只能通过module.exports导出需要暴露的变量
-node 中的导入导出使用 common.js 规范
-node 中的系统模块: 即由 node 官方提供的 api, 这些 api 都是以模块化的方式进行开发的 js 文件, 暴露接口供导入使用), 如 fs 模块和 path 模块
-node中还可以使用第三方开发的模块, 这些模块由多个文件组成并放在一个文件夹中, 也称之为包
+Node.js 规定一个 js 文件就是一个模块, 模块内部定义的变量和函数默认情况下外部无法得到(通过立即执行函数形成的闭包)  
+mode 遵循 common.js 规范进行模块间的引用, 也就是导入导出, 被引入的文件中的语句会执行, 但是只有通过 module.exports 暴露的内容才能被访问
+```
+//导出
+var x = 5;
+var addX = function (value) {
+  return value + x;
+};
+module.exports.x = x;
+module.exports.addX = addX;
+//导入
+var example = require(__dirname + '/filename.js');
+console.log(example.x); // 5
+console.log(example.addX(1)); // 6
+//导入就是将 module.exports 赋值给变量, 如上例中的 example
+```
+
+注意: 在项目中 require() 务必使用绝对路径, __dirname 表示当前文件所在目录, 比如位于 test 文件夹内, 那么路径就是...test, 然后拼接上 + 号后面的内容; 因为如果使用相对路径, 相对的不是当前文件, 而是项目位置  
+如果需要返回上一级目录, 则需要引入 path 模块进行处理
+```
+const path = require('path');
+const upperPath = path.resolve(__dirname,'..')
+```
+
+node 中的系统模块: 即由 node 官方提供的 api, 这些 api 都是以模块化的方式进行开发的 js 文件, 暴露接口供导入使用), 如 fs 模块和 path 模块  
+node中还可以使用第三方开发的模块, 这些模块由多个文件组成并放在一个文件夹中, 也称之为包  
 包管理工具 npm 本身也是第三方模块, 但是由于都要使用, 所以在安装 node 的时候就已经集成了, 不需要自行安装
 
 ### 三、简单使用
@@ -61,12 +83,12 @@ Access to XMLHttpRequest at 'http://localhost:3366/dict' from origin 'http://loc
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 - 产生原因: 请求协议 http,https 的不同, 域 domain 的不同, 端口 port 的不同
-- 解决方法 (如何避免同源策略 (cors) 的影响/成功发送跨域请求)
+- 解决方法 (如何避免同源策略 (cors) 的影响/成功发送跨域请求)  
 (1) 设置响应头
 ```
 response.setHeader("Access-Control-Allow-Origin","请求地址");//*则允许所有域名访问
 例: res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
-//注意 writeHead 和 setHeader 不能一起写, 否则报错 Can't set headers after they are sent
+//注意 setHeader 不能写在 writeHead 之后, 否则报错 Can't set headers after they are sent
 ```
 (2) script 标签的 src 属性不受同源策略影响, 属性值为网址的时候也会发送 http 请求
 

@@ -1,2 +1,3 @@
 * [Home](/)
-* [递归](/javascript/递归.md)
+* [recursion](/javascript/recursion.md)
+* [promise](/javascript/promise.md)

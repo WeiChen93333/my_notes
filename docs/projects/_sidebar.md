@@ -1,2 +1,2 @@
 * [Home](/)
-* [my_reading](/related/my_reading.md)
+* [my_reading](/projects/my-reading.md)
