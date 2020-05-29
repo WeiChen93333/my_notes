@@ -28,3 +28,7 @@ npm i docsify-cli -g
 (2) 进入远程仓库的 settings 页面, 将 source 设置为 master branch/docs
 
 (3) 进入提示的地址即可访问
+
+
+### 图床
+github token for PicGo: 05981e880ae18d970495118480147d5ed0a0d469
