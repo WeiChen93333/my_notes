@@ -3,3 +3,4 @@
 * [mongoose](/related/mongoose.md)
 * [node](/related/node.md)
 * [regexp](/related/regexp.md)
+* [storage](/related/storage.md)

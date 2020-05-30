@@ -12,8 +12,7 @@
 [related](related/)
 [projects](projects/)
 [tools](tools/)
-[docsify](docsify.md) 
-
+[Profile](Profile.md)
 
 <!-- ![](./pikachu.jpg) -->
 
