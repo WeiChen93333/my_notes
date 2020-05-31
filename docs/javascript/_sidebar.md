@@ -2,3 +2,4 @@
 * [recursion](/javascript/recursion.md)
 * [promise](/javascript/promise.md)
 * [array](/javascript/array.md)
+* [wonder](/javascript/wonder.md)

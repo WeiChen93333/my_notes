@@ -115,8 +115,6 @@
 - 获取鼠标选中的文本
   在 mouseup 事件中使用 window.getSelection().toString() 方法即可
 
-
-
 ###### 9. 个人中心
 **说明**
 【extension】

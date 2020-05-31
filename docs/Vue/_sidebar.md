@@ -2,3 +2,6 @@
 * [plugins](/Vue/plugins.md)
 * [directives](/Vue/directives.md)
 * [elegant](/Vue/elegant.md)
+* [communication](/Vue/communication.md)
+* [mixins](/Vue/mixins.md)
+* [wonder](/Vue/wonder.md)
