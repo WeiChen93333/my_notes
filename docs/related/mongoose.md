@@ -59,7 +59,7 @@ const UserModel = conn2.model('users', userSchema)
 ### 增删改查  
 - 查找文档
 ```
-//查找一个
+//查找一个, 找到返回 doc 对象, 找不到返回 null
 MyModel.findOne({word: query['word']}, function(err, doc){
   if(!err){
     console.log(doc)
@@ -67,7 +67,7 @@ MyModel.findOne({word: query['word']}, function(err, doc){
 })
 //doc 是一个 Model 实例对象, 使用 JSON.stringify(doc) 或 doc.toString 可以看到数据原本的样子(string 类型), 但是有些许区别; 
 在 node 中, 通过 JSON.parse(JSON.stringify(doc)) 可以得到数据对象; 而 axios 请求返回的 data 已经是数据对象, 应该是 axios 内部下了功夫
-//查找多个
+//查找多个, 找到返回包含一个或多个 doc 对象的数组, 找不到返回空数组
 MyModel.find({word: query['word']}, function(err, docs){
   if(!err){
     console.log(doc)
