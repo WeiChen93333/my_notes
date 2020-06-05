@@ -8,7 +8,7 @@ const reg = //
 ```
 #### 一. 在两条斜杠中书写规则
 ##### 1. 不变的内容直接写就好, 比如邮箱中的@
-##### 2. "变量" 的表示方法
+##### 2. "变化的内容" 的表示方法
 - \d: 数字(\为转义符)，也就是[0-9]
 - \w: 字母、数字、下划线，也就是[0-9a-z_]
 - \s: space(空白字符)
@@ -27,7 +27,7 @@ const reg = //
 ##### 3. 功能符号
 - 量词  
 +: 一次或更多  
-{数字}: 变量重复的次数, {5} 就是五次  
+{数字}: 重复的次数, {5} 就是五次  
 {最小值, 最大值}: 范围, 如 {1, 5}, 一到五次  
 {最小值, }: 最小值至无限  
 ?: 零次或一次, 等同于 {0,1}  
@@ -42,7 +42,7 @@ console.log(reg.exec(str));
 - 其他功能  
 |: 或  
 (): 分组
-\b 单词边界 \B 非单词边界  
+\\b 单词边界 \B 非单词边界  
 ^: 出现在 [] 中时表示排除; 否则表示匹配的内容的开头必须出现在字符串的开头  
 $: 表示匹配的内容的结尾必须出现在字符串的结尾
 ```
@@ -54,6 +54,26 @@ const reg = /ab/g
 - 附加在 // 后的符号  
 i: 忽略大小写  
 g: 找到全部
+
+### 正则表达式中使用变量
+```
+(1)
+var fun = function(oldV, newV) {
+  const regExp = new RegExp(`\\b${oldV}`, 'g');
+  const str = 'xello yorld';
+  return str.replace(regExp, newV)
+}
+fun('x', 'h') // 'hello yorld'
+(2)
+var fun = function(oldV, newV) {
+  const regExp = eval(`/\\b${oldV}/g`);
+  const str = 'xello yorld';
+  return str.replace(regExp, newV)
+}
+fun('x', 'h') // 'hello yorld'
+
+
+```
 
 #### 二. 字符串方法 (参数为正则实例)
 string.match(regexp)：提供内容  

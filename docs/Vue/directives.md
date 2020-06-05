@@ -83,3 +83,23 @@ Vue.directive(
     }
   )
   ```
+
+**自定义指令使用之四**  
+- 情景描述: p 标签包含一段应为你文本, 要将其中某个单词高亮显示
+- 方案
+  ```
+  const highlight = Vue.directive(  
+    'highlight', {
+      inserted(el, binding, vnode){        
+        const keyword = binding.value
+        const reg = eval(`/\\b${keyword}\\b/ig`)      
+        el.innerHTML = el.innerHTML.replace(reg, `<span style="color:#008000; font-weight:600">${keyword}</span>`)     
+      }    
+    }
+  )
+  ```
+- 当前存在的问题: 重新请求数据时, 显示不刷新的问题  
+  - 如果改变每页显示的条数, 是没有问题的; 而如果改变了页码, 也即是要用新请求到的新数据完全**替换**原有数据, 视图不会刷新   
+  原因: v-for 的就地复用机制  
+  - 解决:  
+  自定义指令钩子函数的第三个参数vnode：Vue 编译生成的虚拟节点。只要给他赋一个唯一的值，就可以强制 dom 刷新了 (vnode.key = 'unique')
