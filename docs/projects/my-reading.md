@@ -110,15 +110,7 @@
   在 vuex-state 中加入 searchHistory, 1. 保存查词跳转记录, 方便回退; 2. 重新打开页面时恢复展示; 3. 使用 watch 监控 searchHistory, 一旦发生变化, 立刻执行 searchThroughDict 进行查词, 减少事件发送 (记忆卡查词除外, 分页组件除外)
 - 模式切换的时候, 之前的单词信息还在, 然后切换到新单词的信息, 不太友好, 不过问题不大
 <!-- - 组件交互不要跑太远了, 一个组件特别是要复用的组件, 不要通过事件总线向不知名的组件发消息, 要和自己的父组件交互, 然后由父组件出面去处理事情 -->
-<!-- 注意 watch 只能监听响应式属性, 通过数组变异方法进行变更是可以监听到的, 直接改变对象的值是不行的, 需要使用 Vue.set 或 vm.$set, 同时 watch 需要加上 deep: true
- queryInfo: {
-      handler(){
-        console.log('test')
-        console.log(this.queryInfo)
-      },
-      deep: true
-    } 
- -->
+
  <!-- 都搞的差不多了, 只剩下将参数传递给 MainPart 了 -->
 
 ###### 8. 右键菜单
