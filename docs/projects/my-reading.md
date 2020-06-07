@@ -5,7 +5,7 @@
 - 本地环境: windows
 - 服务器: 阿里云服务器 ECS 突发性能型, centos 8.1
 - 前端项目 vue cli + webpack3
-- 后端项目 node.js (使用 http 模块 + mongoose) + mongoDB
+- 后端项目 node.js(v12.16.0, 使用 http 模块 + mongoose) + mongoDB
 
 
 ##### (1) 服务器准备与配置
@@ -19,26 +19,65 @@
   - 在打开的远程连接界面中, 粘贴安装命令, 等待安装完成即可
   - 根据提示, 要访问面板, 需要进行安全组配置, 点击: "更多" > "网络和安全组" > "安全组配置" > "配置规则" > "手动添加" > 设置端口范围为: 8888/8888, 设置授权对象为: 0.0.0.0/0
   - 在浏览器中访问安装界面中给出的链接, 输入给出的用户名和密码, 即可访问面板
-- 在 "宝塔 Linux 面板" 中的 "软件商店" 安装需要的软件
-  - Nginx 配置 => 点击: "设置" > "配置修改" > 修改内容如下图
+- 在 "宝塔 Linux 面板" 中的 "软件商店" 安装需要的软件并进行配置  
+  (第一次登录面板, 面板推荐了一些软件, 选择 "编译安装", 安装了 Pure-Ftpd 和 Nginx)  
+  - Nginx 配置 => 点击: "设置" > "配置修改" > 修改内容如下
     ```
+    配置完成后重启 Nginx
+    **基本配置**
     server
     {
-        listen 80; //端口, 需要在安全组规则中开放此端口 (此端口用于: ECS 实例作为网站或 Web 应用服务器)
+        listen 80; //端口, 需要在安全组规则中开放此端口 (80 端口用于: ECS 实例作为网站或 Web 应用服务器)
         server_name ********;  //公网 IP 地址
         index index.html index.htm index.php;
         root  /www/wwwroot/myproject; //项目地址
-    ```
-    在 myproject 下放入 index.html, 通过 ********:80 即可访问到该页面
-  - pm2 配置
+    }
+    //在 myproject 下放入 index.html, 通过 ********(:80 可不输) 即可访问到该页面
+
+    **反向代理**   
+    server
+    {
+      location /api/ 
+      {
+          proxy_pass http://127.0.0.1:3366;
+      }
+    }    
+
+    ```    
+  - pm2 配置 
   - mongoDB 配置
 
 ##### (2) 前端项目上线
-##### (3) 后端项目上线
+- 打包
+  - 在 vue.config.js 中配置路径, 以免找不到资源
+    ```
+    module.exports = {
+      publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+    }
+    ```
+  - 在 router/index.js 中改 mode 为 "hash"
+  - 更改 axios baseURL, 例如 axios.defaults.baseURL = "http://localhost:3366", 将其中的 localhost:3366 改为云服务器公网 IP, 并在后面加上 /api (与 Nginx 反向代理的设置一致)
+  - 执行 npm run build 命令
+- 上传至服务器
+  - 在宝塔面板中, 点击: "文件" > 进入 /www/wwwroot/myproject 路径下, 新建文件夹 reading > 将 dist 文件夹中的文件上传到该文件夹下
+  - 在浏览器中访问 IP 地址/reading, 即可看到自己的前端页面
 
 
-<!-- - 下载 Xshell, Xftp 用来连接实例
-  - 打开 Xshell ，依次进行: "文件" > "新建" > 在 "主机" 处输入服务器的公网 IP > "连接", 随后弹出 "SSH 用户身份验证" 对话框, 但是 Password 这一项是灰色无法填入: 好多文章都说要更改 vi/etc/ssh/sshd_config 的一个配置, 一通搜索终于进入了这个文件找到这个配置, 发现这个配置是对的...然后我在 "新建会话" 上右键进入 "属性" 面板, 把实例密码输进去, 就行了... -->
+##### (3) 后台项目上线
+- 后台文件注意事项
+  - node 服务主机名: 127.0.0.1; 端口: 3366
+  - 如果使用了第三方模块, 文件中引入时不能直接写模块名称, 需要加上 /www/server/nvm/versions/node/v12.16.0/lib/node_modules/, 以 mongoose 为例, 就是 const mongoose = require('/www/server/nvm/versions/node/v12.16.0/lib/node_modules/mongoose)
+- 在宝塔面板中, 点击: "文件" > 进入 /www/wwwroot/myproject/reading 路径下, 新建文件夹 server > 将后台文件上传到该文件夹下  
+- 在宝塔面板中的 "安全" 界面下, 放行 node 服务器端口, 如我使用的 3366 (这一点特别重要, 坑我一下午)
+- 在宝塔面板中的 "软件商店" 界面下, 进行相关配置
+  - pm2 配置 => 点击: "设置"
+    ```
+   > "项目列表": /www/wwwroot/myproject/reading/server/ | www.js | reading_server 
+   > "Node 版本": 切换至本地开发时的版本 v12.16.0
+   > "模块管理": 安装使用的依赖 mongoose
+   //完成如上设置后返回 "项目列表", 点击 "启动" 启动 node 服务
+    ```
+  - mongoDB 配置
 
 <!-- 
 服务器公网 IP: 120.79.214.0
@@ -211,8 +250,9 @@ password: 1111eeee
 - 阅读区单词最好分散对齐  
 - 表单没有自动聚焦第一个 ==> 自定义指令
 
-
-
+【extension】: 可以通过网址引入文本, 方便阅读官方文档
+【extension】: 引入谷歌接口, 方便查询, 尽可能地避免频繁切换页面
+<!-- 越做想法越多, 越做越来劲, 越来越好 -->
 
 #### 二、后端部分
 ##### 接口
