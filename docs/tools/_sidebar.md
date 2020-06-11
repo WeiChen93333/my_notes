@@ -1,3 +1,4 @@
 * [Home](/)
 * [docsify](/tools/docsify.md)
 * [git](/tools/git.md)
+* [vscode](/tools/vscode.md)
