@@ -1,6 +1,8 @@
 * [Home](/)
+* [core](/javascript/core.md)
 * [recursion](/javascript/recursion.md)
 * [promise](/javascript/promise.md)
+* [function](/javascript/function.md)
 * [array](/javascript/array.md)
 * [wonder](/javascript/wonder.md)
 * [interesting](/javascript/interesting.md)

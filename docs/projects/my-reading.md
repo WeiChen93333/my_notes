@@ -45,7 +45,7 @@
 
 **问题与解决**
 - [ongoing]阅读区单词分散对齐
-- [ongoing]双击加入单词集, 同时也会触发单击查询此件
+- [ongoing]双击加入单词集, 同时也会触发单击查询此事件
 
 ###### 3. 单词集
 **说明**
@@ -79,10 +79,9 @@
 ###### 6. 句集 
 **说明** 
 【ongoing】: 
-- 右键菜单选择 "添加到句集", 则将选中内容作为句子添加到句集  
+- 右键菜单选择 "添加到句集", 则将选中内容作为句子添加到句集; 如果选择了多句, 则拆分后添加 (仅支持英文)[感觉蛮鸡肋的...]
 - 登陆后点击用户名, 出现"句集"选项, 点击进入"句集"界面
-- [ongoing]点击句子右边的圆圈, 图形变成 X, 再点一次就删除当前的句子
-- [ongoing]抠词填空...使用自定义指令来做即可
+- 点击句子右边的 X, X 变成红色, 再点一次删除当前的句子
 **问题与解决**
 
 ###### 7. 查询
@@ -106,7 +105,7 @@
 使用 input 加上列表来模拟, 点击 input 元素会出现聚焦, 如果加上 disabled 属性, 不会聚焦了, 但是无法触发点击事件, 需要使用 readonly 属性
 - 发生单词查询的场景太多了, 比较分散, 原本在 MainPart.vue 中定义 searchThroughDict 处理函数进行统一处理, 然而通过子组件自定义事件和事件总线发送事件太乱, 自己都整迷糊了
   在 vuex-state 中加入 searchHistory, 1. 保存查词跳转记录, 方便回退; 2. 重新打开页面时恢复展示; 3. 使用 watch 监控 searchHistory, 一旦发生变化, 立刻执行 searchThroughDict 进行查词, 减少事件发送 (记忆卡片查词除外)
-- [extension]模式切换的时候, 之前的单词信息还在, 然后切换到新单词的信息, 不太友好, 不过问题不大
+- 模式切换的时候, 之前的单词信息还在, 然后切换到新单词的信息, 不太友好, 不过问题不大
 - 查询单词高亮显示
   正则匹配全部需要修改的内容，书写高亮颜色的标签并用 replace 替换 
 <!-- - 组件交互不要跑太远了, 一个组件特别是要复用的组件, 不要通过事件总线向不知名的组件发消息, 要和自己的父组件交互, 然后由父组件出面去处理事情 -->
@@ -131,10 +130,11 @@
 
 ###### 9. 个人中心
 **说明**
-【extension】
-- 导入资料集 如新概念全 48 篇
-- 导出句集  md 格式 就是写文件操作啊 很简单
-**问题与解决**
+<!-- 【extension】
+- 导入资料集 如新概念全 48 篇 -->
+- 点击用户名, 弹出菜单
+- 点击 "退出", 退出登录
+- 点击 "句集", 进入句集界面
 
 <!-- 手机版方案  
 注册登录放在最前面 如黑马后台那样  
@@ -154,10 +154,9 @@
  
 - 查完一个词往后滚动, 再查下一个词没有返回顶端 ==> 自定义指令 
 - 表单没有自动聚焦第一个 ==> 自定义指令
-
+- 在每个页面设置全局事件, 点击其他地方时, 让弹出框消失
 【extension】: 可以通过网址引入文本, 方便阅读官方文档
 【extension】: 引入谷歌接口, 方便查询, 尽可能地避免频繁切换页面
-<!-- 越做想法越多, 越做越来劲, 越来越好 -->
 
 
 #### 二、后端部分
@@ -241,19 +240,19 @@ export { request }
 
 #### 三、部署上线
 Vue + node + mongoDB 项目部署至阿里云服务器
-> 前端学习路上第一个自己独立完成的项目, 以此为记. 
+> 前端学习路上第一个自己独立完成的项目, 以此为记.   
 
 **项目环境如下:**
 - 部署时间: 20200606 - 20200609 (共使用 19 小时)
 - 本地环境: windows
-- 服务器: 阿里云服务器 ECS 突发性能型, CentOS 8.1; 主要使用宝塔面板, 内含 SSH 终端, 没有使用 Xshell Xftp
-- 前端项目 vue(v2.6) & vue-cli(v4.2)
-- 后端项目 node.js(v12.16.0, 使用 http 模块 & mongoose) + mongoDB
+- 服务器: 阿里云服务器 ECS 突发性能型, CentOS 8.1; 主要使用宝塔面板, 内含 SSH 终端, 没有使用 Xshell, Xftp
+- 前端项目: vue(v2.6) & vue-cli(v4.2)
+- 后端项目: node.js(v12.16.0, 使用 http 模块 & mongoose) + mongoDB
 
 
-##### (1) 服务器准备与配置
+### (1) 服务器准备与配置
 - 购买阿里云服务器 ECS, 最便宜的那种, 赶上 618 优惠 91 元一年, 系统是 CentOS
-- 进入云服务器管理控制台, 点击: "实例与镜像" > "实例". (开始看不到实例, 百度得知要在页面左上角选择区域, 选择我购买的区域 "华南1(深圳)" 就能看到了)
+- 进入云服务器管理控制台, 点击: "实例与镜像" > "实例". (开始看不到实例, 百度得知要在页面左上角选择区域, 选择自己购买的区域 "华南1(深圳)" 就能看到了)
 - 在 "实例" 页面中, 点击: "更多" > "密码/秘钥" > "重置实例密码"; 密码设置完成后, 点击: "更多" > "实例状态" > "重启", 重启实例, 使设置生效
 - 在 "实例" 页面中, 点击: "远程连接" > "Workbench" > 填入系统用户名 root 与上一步设置的实例密码
 - 安装 "宝塔 Linux 面板"
@@ -262,34 +261,31 @@ Vue + node + mongoDB 项目部署至阿里云服务器
   - 在打开的远程连接界面中, 粘贴安装命令, 等待安装完成即可
   - 根据提示, 要访问面板, 需要进行安全组配置, 在 "实例" 页面中, 点击: "更多" > "网络和安全组" > "安全组配置" > "配置规则" > "手动添加" > 设置端口范围为: 8888/8888, 设置授权对象为: 0.0.0.0/0
   - 在浏览器中访问安装界面中给出的链接, 输入给出的用户名和密码, 即可访问面板
-- 在 "宝塔 Linux 面板" 中的 "软件商店" 安装需要的软件并进行配置  
+- 在 "宝塔 Linux 面板" 中的 "软件商店" 界面下安装需要的软件并进行配置  
   (第一次登录面板, 面板推荐了一些软件, 选择 "编译安装", 安装了 Pure-Ftpd 和 Nginx)  
   - Nginx 配置 => 点击: "设置" > "配置修改" > 作出如下修改 (作出修改后需重启 Nginx)
-    ```    
-    **基本配置**
+    ```
     server
     {
         listen 80; //端口, 需要在安全组规则中开放此端口 (80 端口用于: ECS 实例作为网站或 Web 应用服务器)
         server_name ********;  //公网 IP
         index index.html index.htm index.php;
         root  /www/wwwroot; //项目所在文件夹
+        
+        #error_page   404   /404.html;
+        include enable-php.conf;
+        
+        location /api/ 
+        {
+            proxy_pass http://127.0.0.1:3366/; //node 服务的域名与端口
+        }
     }
     //在 wwwroot 下放入 index.html, 通过 ********(:80 可不输入) 即可访问到该页面
-
-    **反向代理**   
-    server
-    {
-      location /api/ 
-      {
-          proxy_pass http://127.0.0.1:3366/;
-      }
-    }    
-
     ```    
   - pm2: 搜索安装 pm2
   - mongoDB: 搜索安装 mongoDB
 
-##### (2) 前端项目上线
+### (2) 前端项目上线
 - 打包
   - 在 vue.config.js 中配置路径, 以免找不到资源
     ```
@@ -302,63 +298,58 @@ Vue + node + mongoDB 项目部署至阿里云服务器
   - 执行 npm run build 命令
 - 上传至服务器
   - 在宝塔面板中, 点击: "文件" > 进入 /www/wwwroot 文件夹 > 将 dist 文件夹压缩后上传, 解压后重命名为 reading
-  - 在浏览器中访问 IP 地址/reading, 即可看到自己的前端页面
+  - 在浏览器中访问公网 IP/reading, 即可看到自己的前端页面
 
 
-##### (3) 后台项目上线
-- node 文件注意事项  
+### (3) 后台项目上线
+- node 文件注意事项
   - 如果使用了第三方模块, 文件中引入时不能直接写模块名称, 需要加上 /www/server/nvm/versions/node/v12.16.0/lib/node_modules/, 以 mongoose 为例, 就是 const mongoose = require('/www/server/nvm/versions/node/v12.16.0/lib/node_modules/mongoose')
 
-- 在宝塔面板中, 点击: "文件" > 进入 /www/wwwroot/reading 路径下, 新建文件夹 server > 将 node 文件上传到该文件夹下  
+- 在宝塔面板中, 点击: "文件" > 进入 /www/wwwroot/reading 文件夹 > 新建文件夹 server > 将 node 文件上传至该文件夹
 
-- 在宝塔面板中的 "安全" 界面下, 放行 node 服务端口, 如我使用的 3366
+- 在宝塔面板中的 "安全" 界面下, 放行 node 服务端口, 如本项目使用的 3366
 
 - 在宝塔面板中的 "软件商店" 界面下, 进行相关配置
-  - pm2 配置 => 点击: "设置"
-    ```
-   > "项目列表": /www/wwwroot/reading/server/ | www.js | reading_server 
-   > "Node 版本": 切换至本地开发时的版本 v12.16.0
-   > "模块管理": 安装使用的依赖 mongoose
-   //完成如上设置后返回 "项目列表", 点击 "启动" 启动 node 服务
-    ```
+  - pm2 配置 => 点击: "设置" >  
+   "Node 版本": 切换至本地开发时的版本 v12.16.0  
+   "模块管理": 安装使用的依赖 mongoose  
+   "项目列表": /www/wwwroot/reading/server/ | www.js | reading_server
 
 - mongoDB 配置与操作
   - 在宝塔面板中的 "安全" 界面下, 放行 mongoDB 默认端口 27017
   - 权限 (可以不设置, 但有一定风险)  
-    ```
-    创建管理员账户
-    在宝塔面板中的 "文件" 界面下, 打开终端, 使用如下命令
-    mongo
-    use admin
-    db.createUser({user: '用户名', pwd: '用户密码', roles: ['root']})
-    db.auth('用户名', '用户密码') // 如果返回 '1' 表示验证成功
-    创建普通账户
-    use 自定义数据库名称
-    db.createUser({user: '用户名', pwd: '用户密码', [{role: 'readWrite', db: "自定义数据库名称"}]}) 
-    db.auth('用户名', '用户密码')
-    使用 mongose 连接数据库
-    (不使用权限时) mongoose.connect('mongodb://127.0.0.1/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
-    (使用权限时) mongoose.connect('mongodb://用户名:用户密码@127.0.0.1:27017/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
-    或:
-    mongoose.createConnection('mongodb://用户名:用户密码@127.0.0.1:27017/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
-    ```
+      ```
+      创建管理员账户
+      在宝塔面板中的 "文件" 界面下, 打开终端, 使用如下命令
+      mongo
+      use admin
+      db.createUser({user: '用户名', pwd: '用户密码', roles: ['root']})
+      db.auth('用户名', '用户密码') // 返回 '1' 表示验证成功
+      创建普通账户
+      use 自定义数据库名称
+      db.createUser({user: '用户名', pwd: '用户密码', [{role: 'readWrite', db: '自定义数据库名称'}]}) 
+      db.auth('用户名', '用户密码')
+      使用 mongoose 连接数据库
+      (不使用权限时) mongoose.connect('mongodb://127.0.0.1/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
+      (使用权限时) mongoose.connect('mongodb://用户名:用户密码@127.0.0.1:27017/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
+      或:
+      mongoose.createConnection('mongodb://用户名:用户密码@127.0.0.1:27017/数据库名称', { useNewUrlParser: true, useUnifiedTopology: true })
+      ```
 
   - 如果设置了权限, 那么在宝塔面板中的 "软件商店" 界面下, 点击 MongoDB 的 "设置" > "配置文件" > 作出如下修改
-    ```
-    security:
-    authorization: enabled
-    ```
+      ```
+      security:
+      authorization: enabled
+      ```
 
-  - 导入本地数据库
+  - 导入数据库
     - 将数据库文件(json 或 csv 格式)上传至云服务器 /www/wwwroot/reading/db 文件夹下
     - 打开终端, 使用如下命令
-      ```
-      mongo
-      mongoimport -h 主机名:端口 -u 用户名 -p 密码 -d 数据库名 -c 集合名 --file 文件地址(如: /www/wwwroot/reading/db/words.json)
-      //主机名:端口默认为 127.0.0.1:27017; 用户名密码为权限设置中设置的用户名和密码; 数据库和集合名为要导入文件的数据库和集合名称; 文件地址为要导入的文件存放的地址
-      ```
- 
-  <!-- mongoimport -h 127.0.0.1:27017 -u whydict -p 3366 -d dict -c words --file /www/wwwroot/reading/db/words.json -->
+        ```
+        mongo
+        mongoimport -h 主机名:端口 -u 用户名 -p 密码 -d 数据库名 -c 集合名 --file 文件地址(如: /www/wwwroot/reading/db/words.json)
+        //主机名:端口默认为 127.0.0.1:27017; 用户名密码为权限设置中设置的用户名和密码; 数据库和集合名为要导入文件的数据库和集合名称; 文件地址为要导入的文件存放的地址
+        ```
 
 **至此, 大功告成 !**
 

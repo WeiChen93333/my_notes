@@ -90,7 +90,9 @@ response.setHeader("Access-Control-Allow-Origin","请求地址");//*则允许所
 例: res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
 //注意 setHeader 不能写在 writeHead 之后, 否则报错 Can't set headers after they are sent
 ```
-(2) script 标签的 src 属性不受同源策略影响, 属性值为网址的时候也会发送 http 请求
+(2) jsonp: script 标签的 src 属性不受同源策略影响, 属性值为网址的时候也会发送 http 请求  
+JSONP 由两部分组成：回调函数和数据。回调函数是当响应到来时应该在页面中调用的函数。回调函数的名字一般是在请求中指定的。而数据就是传入回调函数中的 JSON 数据。
+(3) ngix 反向代理
 
 ##### 使用内置 fs 模块处理文件
 ```

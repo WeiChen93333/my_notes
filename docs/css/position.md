@@ -14,7 +14,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/CSS/All_About_The_Containing_Block
 ### 定位(非 static)引起的改变
 - 正常流中, 一个元素如不设置宽高, 宽度继承自父元素, 高度由子元素撑开
 - 设置了定位的元素不再继承父元素的宽度, 可将 width 设置为 inherit 强行继承。
-- 行内元素设置为绝对地位后可以设置宽高
+- 行内元素设置为绝对定位后可以设置宽高, 同时父元素设置的 text-align 无效
 
 
 ### 定位类型
