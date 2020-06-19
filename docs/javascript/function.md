@@ -1,8 +1,8 @@
-### function
+### 函数
 > member of the Object type that may be invoked as a subroutine  
 In addition to its properties, a function contains executable code and state that determine how it behaves when invoked.
 
-##### 函数定义与调用
+#### 函数定义与调用
 - 回调函数
 - 函数嵌套
 
@@ -40,31 +40,33 @@ window.module2()
 //2
 //1
 ```
-    
-我的笔记
 
-##### 函数如何从外部获取信息
-- 上下文-this指向的对象:
-this是JavaScript的一个关键字，是指函数执行过程中，自动生成的一个内部对象，是指当前的对象，只在当前函数内部使用。
-(1)在独立函数调用时, 非严格模式下, 默认指向window; 严格模式下this为undefined;
-(2)在带修饰的函数调用时, 如调用方式为obj.fn()时, this指向obj;
-(3)call, apply, bind可以改变默认的指向
+#### 函数如何从外部获取信息
+##### 上下文 this 指向的对象:
+this是JavaScript的一个关键字，是指函数执行过程中，自动生成的一个内部对象，是指当前的对象，只在当前函数内部使用。  
+this 既不指向函数自身也不指向函数的词法作用域，它实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数如何被调用。作用域链取决于函数的定义位置，而 this 取决于函数的调用位置。
+(1) 在独立函数调用时, 非严格模式下, 默认指向 window; 严格模式下 this 为 undefined;  
+(2) 在带修饰的函数调用时, 如调用方式为 obj.fn() 时, this 指向 obj; (注意：obj.fn 赋值给其他变量(包括参数传递),再通过变量调用等同于独立调用,使用第一条规则)  
+(3) call, apply, bind 可以改变默认的指向  
+<!-- call 的第一个参数是对象, 包括一般对象, 数组/伪数组, 函数对象 -->
 
-特殊情况:
-构造函数: 构造函数函数体{}内的this指向实例; 构造函数原型对象内的方法的this也指向实例
-计时器: 参数是普通函数, this指向window; 参数是箭头函数, 跟随它上级的this, 也就是计时器(参数)所在的函数体的this
-vue实例:vue实例的this指向实例本身; vue实例中函数的this指向实例本身
-事件处理函数: 事件处理函数的this指向事件源(事件绑定的元素)
-数组/类数组的成员函数: this指向数组/类数组
-      注意: this看调用, 但是箭头函数不是
-      箭头函数的this是在定义函数时绑定的，不是在执行过程中绑定的。箭头函数没有自己的this, 而是继承自父执行上下文
-      也就是说, 箭头函数作为什么不重要, 作为参数也好, return的值也好, 就直接看它写在哪里就行了   
-      var opt = {
-          name:"Amy",
-          say:function(){setTimeout(()=>{return this.name})}
-      }
-      opt.say() //undefined
-    
+**特殊情况:**
+- 构造函数: 构造函数函数体 {} 内的 this 指向实例; 构造函数原型对象内的方法的 this 也指向实例
+- 计时器: 参数是普通函数, this 指向 window; 参数是箭头函数, 跟随它定义位置的 this, 也就是计时器(参数)所在的函数体的 this
+- Vue 实例: Vue 实例的 this 指向实例本身; Vue 实例中函数的 this 指向实例本身
+- 事件处理函数: 事件处理函数的 this 指向事件源(事件绑定的元素)
+- 数组/类数组的成员函数: this 指向数组/类数组
+- 箭头函数: 箭头函数没有自己的 this, 而是跟随它定义位置的 this; 箭头函数的 this 在定义函数时绑定，而不是在执行过程中绑定。
+
+```js
+var opt = {
+  name: "Amy",
+  say: function(){
+    setTimeout(()=>{console.log(this.name)})
+  }
+}
+opt.say() //Amy
+```
 - 作用域链
 
 - 传参

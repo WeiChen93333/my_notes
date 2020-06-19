@@ -1,15 +1,26 @@
-### 一、什么是 promise
+### Promise
+
+#### 什么是 promise
 >promise 是一种异步编程解决方案  
 
-##### 语法
+#### 语法
 new Promise( function(resolve, reject) {...})  
-**参数 executor**  
-executor是带有 resolve 和 reject 两个参数的函数 。Promise构造函数执行时立即调用executor 函数， resolve 和 reject 两个函数作为参数传递给executor。executor 内部通常会执行一些异步操作，一旦异步操作执行完毕(可能成功/失败)，要么调用resolve函数来将promise状态改成fulfilled，要么调用reject 函数将promise的状态改为rejected。
+##### 参数 executor 
+executor 是带有 resolve 和 reject 两个参数的函数. Promise 构造函数执行时立即调用 executor 函数, resolve 和 reject 两个函数作为参数传递给 executor. executor 内部通常会执行一些异步操作，一旦异步操作执行完毕 (可能成功/失败), 要么调用 resolve 函数来将 promise 状态改成fulfilled, 要么调用 reject 函数将 promise 的状态改为 rejected。
 
-*既然 promise 包含的是一个异步的操作/一个将来的结果, 那么 resolve, reject 这两个钩子由谁来触发呢? 应该是有两种, 一是该异步操作的回调函数中触发(自动); 二是设置条件判断来触发(手动)*
+##### 返回值
+返回值是 一个Promise 对象
+
+![](./img/promise1.png)
+
+
+##### 触发 resolve, reject 这两个钩子
+这两个钩子可以在两个地方触发:
+- 在该异步操作的回调函数中触发
+- 将这两个函数保存出去, 在其他地方触发
 
 **异步操作的回调函数中触发**
-```
+```js
 const handWordRouter = (req, res) => {  
   const method = req.method
   const url = require('url') 
@@ -31,8 +42,8 @@ const handWordRouter = (req, res) => {
 }
 ```
 
-**设置条件判断来触发**
-```
+**其他地方触发**
+```js
 export default {
   name:'MoMessageBox', 
   data(){
@@ -65,9 +76,9 @@ export default {
 }
 ```
 
-### 二、与 async await 协作
+#### 与 async await 协作
 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。
-```
+```js
 const handWordRouter = (req, res) => {  
   const method = req.method
   const url = require('url') 
@@ -113,8 +124,7 @@ console.log(result) //第二打印, 结果是 Promise 对象{resolved, model}
  
 ```
 
-
-我的理解: async用于申明函数中包含异步操作, 比如数据请求  
+async 用于申明函数中包含异步操作, 比如数据请求  
 await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。  
 阻塞后面的代码: 也就是阻塞它后面的语句; 但是函数外部的其他代码是不受影响的  
 不需要写 then; catch 是不能省略的
