@@ -9,3 +9,5 @@
 * [object](/javascript/object.md)
 * [wonder](/javascript/wonder.md)
 * [interesting](/javascript/interesting.md)
+* [practices](/javascript/practices.md)
+* [book1](/javascript/book1.md)

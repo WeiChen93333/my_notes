@@ -128,3 +128,22 @@ async 用于申明函数中包含异步操作, 比如数据请求
 await 是个运算符，用于组成表达式，await 表达式的运算结果取决于它等的东西。如果它等到的不是一个 Promise 对象，那 await 表达式的运算结果就是它等到的东西。如果它等到的是一个 Promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 Promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。  
 阻塞后面的代码: 也就是阻塞它后面的语句; 但是函数外部的其他代码是不受影响的  
 不需要写 then; catch 是不能省略的
+
+#### 禁止
+- 计算属性中不要使用 promise (async await)
+```js
+computed: {
+  username: {
+    async get(){      
+      const userId = window.sessionStorage.getItem('userId')
+      if(userId){        
+      const {data} = await this.$http('GET', '/userInfo', {params: {userId: userId}})
+      console.log(data) //首先打印, 数据正常    
+      return console.log('test') //其次打印, 而显示的执行位置却不是本行, 而是 async 所在的那一行
+      //无论是 return 数据, 还是 return 打印语句, username 都是 [object Promise]
+      }
+    }
+  }
+}
+
+```
