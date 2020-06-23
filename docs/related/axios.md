@@ -66,11 +66,14 @@
     }
     //chunk 是 Buffer 实例, typeof 是 object, 使用 chunk.toString 累加, 得到 JSON 字符串, 使用 JSON.parse(postData) 即可得到原本的数据
 ```
-- 发送 PUT 请求: 和 POST 一样
+- 发送 PUT 请求: 和 POST 一样  
 客户端提供改变后的完整资源
 
 - 处理 PUT 请求
-node 本身自带的 http 模块支持 get 和 post 操作，但似乎不支持 put 操作, 需要使用框架 express/koa
+发送 PUT 请求会受到 CORS policy 影响, 需要配置响应头
+```js
+res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+```
 
 ### 二、配置默认值
 You can specify config defaults that will be applied to every request.

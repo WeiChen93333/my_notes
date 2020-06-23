@@ -7,6 +7,7 @@
 * [this](/javascript/this.md)
 * [array](/javascript/array.md)
 * [object](/javascript/object.md)
+* [event](/javascript/event.md)
 * [wonder](/javascript/wonder.md)
 * [interesting](/javascript/interesting.md)
 * [practices](/javascript/practices.md)
