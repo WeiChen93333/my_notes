@@ -7,21 +7,40 @@
   - 自定义事件的传参问题  
     父组件接收子组件自定义事件时, 如果只接收子组件携带的参数, 那么就不写(), 否则报错; 如果要自定义参数, 加上(参数)即可, 如果两个参数都要, (参数, 参数)即可  
   
-2. 父子访问 ($ref, $parent)
+2. 父子访问 ($refs, $parent)
   - <my-component ref='mycom'></my-component> 
   - 父访子: this.$refs.mycom.(属性名称或者方法) 
   - 子访父: this.$parent.(属性名称或方法)
+**$refs**
+ref 和 class 不一样, 它只在当前 "作用域" 有用, 也就是说子组件元素的 ref 父组件是无法获取的. 如果一个子组件元素上有 ref, 而在父组件用了很多次, 在子组件中通过 ref 只能获取到"激活"(focus 状态) 的 input 元素.  
+ref 可以用在组件上, 也可以用在元素上, 用在组件上时获取到组件实例, 用在元素上获取到元素. 当使用 v-for 渲染多个拥有相同 ref 的组件/元素的时候, 获取到包含所有组件/元素的数组; 而如果不是 v-for 渲染, 而是手写, 只能获取最后一个组件/元素
+
   
 3. 事件总线 (非父子关系)
-  ```
-  vue原型链挂载总线: Vue.prototype.$bus = new Vue();
-  发送方: this.$bus.$emit("eventName",value); 
-  接收方[写在 mounted 钩子里]: this.$bus.$on("eventName", value =>{ })
-  value是传来的值，可以接收多个参数
-  使用 $bus 的时候接收方别忘了在 beforDestroy 函数中解绑，否则会一直叠加的调用：
+  ```js  
+  //vue 原型链挂载总线 
+  Vue.prototype.$bus = new Vue()
+  // 发送
+  this.$bus.$emit("eventName",value); 
+  //接收
+  mounted(){
+    this.$bus.$on("eventName", value =>{ })
+  }
+  //解绑，否则会 $on 会多次执行 -- 事件总线, 给 window 添加的方法, 定时器, 等等, 全局的东西不会随着组件销毁而销毁, 所以要手动去除  
+  mounted(){
+    this.$bus.$off("eventName") // this.$bus.$on 前面加上
+    this.$bus.$on("eventName", value =>{ })
+  }
+  //或  --  beforDestroy 钩子里
   beforDestroy(){
-    this.$bus.$off("eventName")
-  };  //当这个组件销毁的时候bus也跟着一起销毁; 写在 this.$bus.$on 前面也可  
+    this.$bus.$off("eventName") 
+  }
+  //或  --  通过 hook 监听组件销毁钩子函数，并取消监听事件
+  mounted(){    
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('resize', this.$_handleResizeChart)
+    })
+  }
   ```
 
 > 非典型传输方式--插槽

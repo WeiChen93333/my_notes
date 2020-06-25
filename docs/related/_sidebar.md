@@ -5,3 +5,4 @@
 * [regexp](/related/regexp.md)
 * [storage](/related/storage.md)
 * [performance](/related/performance.md)
+* [merge](/related/merge.md)
