@@ -61,7 +61,59 @@ export default {
 #### vue. observer
 
 #### 插槽
-待整理补充
+
+- 匿名插槽: 一个子组件中只能有一个, 在父组件中填入的内容会填充(不需要根标签)  
+
+- 具名插槽: 可以有多个, 可与匿名插槽共存
+```js
+<template v-slot:header>
+  <h1>Here might be a page title</h1>
+</template>
+```
+  - 一个不带 name 的插槽出口会带有隐含的名字“default”
+  - 新的插槽写法: v-slot:default=”scope” (旧写法: slot=”name” slot-scope=”scope”)
+
+- 作用域插槽
+父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。  
+在子组件中留了插槽, 在父组件中用内容填充插槽, 插槽内容是无法访问子组件的数据的, 简单粗暴一点说, 就是写在哪里就访问哪里的数据, 否则就能靠传
+
+*数据的话, 写在哪里就用哪里的, 但是css样式, 写在哪儿都可以, 写在子组件里也行, 写在父组件里也行(注意: 子组件插槽部分的 class 样式可以写在子组件里, 也可以写在父组件里; 子组件的 class 样式只能写在子组件里, 但是class名还是可以在父组件里用, 作为插槽 class 的父级)*
+
+```js
+//父组件
+<template v-slot:default="scope">
+  <span>{{scope.item}}</span>
+</template>
+
+//子组件
+<slot :item="item"></slot>
+//或
+<slot v-bind="{ item: 4 }"></slot>
+```
+
+这个其实有点像父子组件传值, 通过在标签上传递数据给内容区展示; 只是子组件接收数据放在了 props 属性中, 而插槽内容接收数据放在 scope 对象中; 可以传递的值包括他”正常”可以访问的值, 也就是如果他不是插槽, 一般元素可以访问的值: 包括 dom 中的数据以及 data, props, computed 中的数据
+
+*有没有发现, dom元素会构成”作用域”, 典型的以v-for循环li标签为例, 每一个li标签和它的后代们形成一个”域”, 标签之间无法互相访问对方的数据*
+
+[official docs]Inside v-for blocks we have full access to parent scope properties.
+是说 li 的子元素可以访问 item 的内容的意思吗? 而这是我之前体会到的, 我真哒太棒鸟吧!!!
+
+**与v-for循环一起用**  
+如循环一个列表, 每个 li 标签渲染的数据都不一样, item 每次传递的值都不一样
+
+*在循环中是生成了很多个同名插槽吗? 模板只有一个哦*
+
+![](./img/communication2.png)  
+![](./img/communication1.png)
+ 
+**小用法--默认值**  
+有时为一个插槽设置具体的后备 (也就是默认的) 内容是很有用的，它只会在没有提供内容的时候被渲染。
+```js
+<button type="submit">
+  <slot>Submit</slot>
+</button>
+```
+
 
 #### $attrs, inheritAttrs, $listeners (爷孙/嵌套)
 

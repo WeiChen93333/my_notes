@@ -4,7 +4,6 @@
 * [promise](/javascript/promise.md)
 * [function](/javascript/function.md)
 * [closure](/javascript/closure.md)
-* [this](/javascript/this.md)
 * [array](/javascript/array.md)
 * [object](/javascript/object.md)
 * [loop](/javascript/loop.md)
