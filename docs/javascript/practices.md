@@ -71,7 +71,69 @@ But what happens if E is triggered at a high frequency, for instance, 200 times 
 https://segmentfault.com/a/1190000018428170
 
 
-#### 深拷贝
+#### 深浅拷贝
+##### 浅拷贝
+原对象中, 如果属性是基本类型，拷贝值，如果是引用类型，拷贝内存地址; 这种情况下, 原对象和克隆的对象任何一方修改了内嵌引用类型的属性, 另一方都会受到影响
+```js
+const arr = ['3', {name: 'chen'}]
+const clone = []
+for(let item in arr){
+  clone.push(arr[item])
+}
+arr[1].name = 'change'
+console.log(clone) //[ '3', { name: 'change' } ]
+arr[1] = 'change'
+console.log(clone) //[ '3', { name: 'change' } ]
+```
+
+##### 深拷贝 - (暂兼容对象和数组)
+无限层级拷贝。深拷贝的对象无论修改基本数据类型和引用数据类型都不会影响原有的数据类型, 也就是除了和原对象长得一模一样, 其他没有任何关系了
+```js
+//通过递归
+function isObject(source){
+  return source.constructor == Object
+}
+function isArray(source){
+  return source.constructor == Array
+}
+function isBasic(source){
+  return typeof source !== 'object' || typeof source === null
+}
+function deepClone(source){ 
+  if(isBasic(source)) return source
+  const clone = isObject(source) ? {} : isArray(source) ? [] : null       
+  const propNames = Object.getOwnPropertyNames(source)      
+  propNames.forEach((value) => {
+    if(isBasic(source[value])){
+      return clone[value] = source[value]        
+    }
+    if(isObject(source[value]) || isArray(source[value])){               
+      clone[value] = deepClone(source[value])
+    }     
+  })
+  return clone
+}
+const obj = {
+  simple: 'chen',
+  complex: {
+    age: 27
+  }
+}
+const objClone = deepClone(obj)
+console.log(objClone)
+console.log(objClone == obj)
+console.log(objClone.complex == obj.complex)
+
+const arr = [
+  30,
+  ['today', 'happy']
+]
+
+const arrClone = deepClone(arr)
+console.log(arrClone)    
+console.log(objClone == arr)
+console.log(objClone[1] == arr[1])
+```
 
 
 

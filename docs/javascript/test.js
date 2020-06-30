@@ -1,34 +1,44 @@
-function Person(name, age, job){  
-  this.name = name
-  this.age = age
-  this.job = job   
+function isObject(source){
+  return source.constructor == Object
 }
-const person = new Person('chen', 27, 'programmer')
-
-console.dir(person)
-
-//原始值忽略
-
-function newMock(){
-  const obj = {}  //(1)
-  const Constructor = [].shift.apply(arguments)
-  obj.__proto__ = Constructor.prototype  //(3) 
-  const result = Constructor.apply(obj, arguments)  //(2)  
-  return result instanceof Object ? result : obj  //(4)
+function isArray(source){
+  return source.constructor == Array
 }
-function Creation(name, age, job){    
-  this.name = name
-  this.age = age
-  this.job = job  
-  const love = 'love'
-  return function(){
-    console.log('true')
+function isBasic(source){
+  return typeof source !== 'object' || typeof source === null
+}
+function deepClone(source){ 
+  if(isBasic(source)) return source
+  const clone = isObject(source) ? {} : isArray(source) ? [] : null
+  console.log(clone)
+  const propNames = Object.getOwnPropertyNames(source)      
+  propNames.forEach((value) => {
+    if(isBasic(source[value])){
+      clone[value] = source[value]
+      console.log(clone)
+      return clone
+    }
+    if(isObject(source[value]) || isArray(source[value])){
+      deepClone(source[value])
+    }     
+  })
+  return clone
+}
+
+const obj = {
+  simple: 'chen',
+  complex: {
+    age: 27
   }
 }
-const final = newMock(Creation, 'chen', 27, 'programmer')
-console.log(final) //Creation { name: 'chen', age: 27, job: 'programmer' }
+const objClone = deepClone(obj)
+console.log(objClone)
 
+const arr = [
+  30,
+  ['today', 'happy']
+]
 
-console.log(typeof Creation)
-console.log(Creation instanceof Object)
+const arrClone = deepClone(arr)
+console.log(arrClone)
 

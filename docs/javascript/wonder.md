@@ -17,3 +17,30 @@ https://www.jianshu.com/p/86250c123e53
 #### 获取给定范围的随机数
 Math.ceil(Math.random()*(this.wordBase.length-1)) 似乎取不到 0, Math.ceil(0) 的结果是 0 啊, 为什么取不到呢
 parseInt(Math.random()*(this.wordBase.length)) 这样就没问题了
+
+#### 为什么在 if else 使用 const 定义的变量无法在外面访问
+```js
+const a = 3
+if(a > 3){
+  const test1 = 'test1'
+}else{
+  const test2 = 'test2'
+}
+console.log(test1)
+// or
+console.log(test2)
+//二者都是 'is not defined'
+//一般这种都是处理相同的数据在不同情况下的表现, 应该是同一个变量 if...const test = 'xxx'......else...const test = 'xxx'; 可以使用三目运算符
+```
+
+但是下面这样是可以的呀
+```js
+function father(){
+  const test = 'test'
+  function son(){
+    console.log(test) //'test'
+  }
+  son()
+}
+father()
+```

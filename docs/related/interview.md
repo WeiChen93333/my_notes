@@ -12,3 +12,9 @@ https://blog.csdn.net/LuckyWinty/article/details/103268296
 #### 原生Ajax和axios的区别，Ajax怎么发送http请求的？
 
 #### rem和em有区别嘛? 1em等于多少像素
+
+#### 一般简单的动画为什么用css3的animation而不是用position动画？
+我：position动画会脱离文本流，动画性能消耗大，而css3动画基于帧动画，浏览器可对动画做优化，性能提高不少
+（其实华哥也不太确定这样答对不对，只见面试官点了点头）
+
+#### 字符串的一些常用方法
