@@ -238,9 +238,6 @@ console.dir(obj2.__proto__ == obj1) //true
 ```
 也就是这种创建方式将 obj1 直接赋值给了被创建对象的 \__proto__ 属性
 
-#### 疑问
-##### 内置的构造函数 Object Function 等是由谁创建的呢, 是否在它们上面还有更强大的存在(非人)
-
 
 ### 原型模式
 创造对象最常见的方式就是组合使用构造函数模式与原型模式. 构造函数模式用于定义实例属性, 而原型模式用于定义方法和共享的属性.
@@ -248,3 +245,22 @@ console.dir(obj2.__proto__ == obj1) //true
 
 ## 继承
 
+
+## JS中区分对象和数组的四种方法
+```js
+//(1)
+{}.constructor    //Object
+[].constructor    //Array
+
+//(2)
+[] instance of Array   //true
+{} instance of Array   //false
+
+//(3)
+Array.isArray([])  //true
+Array.isArray({})  //false
+
+//(4)
+Object.prototype.toString.call([])   //["object Array"]
+Object.prototype.toString.call({})   //["object Object"]
+```

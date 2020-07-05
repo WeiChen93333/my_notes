@@ -8,9 +8,10 @@
 
 [css](css/)
 [javascript](javascript/)
-[Vue](Vue/)   
+[Vue](Vue/)  
 [related](related/)
-[projects](projects/)
+[books](books/)
+[projects](projects/)  
 [tools](tools/)
 [Profile](Profile.md)
 

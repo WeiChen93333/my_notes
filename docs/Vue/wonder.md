@@ -13,6 +13,20 @@ this.queryInfo.word = this.currentWord
 console.log(this.queryInfo.word) //有值
 console.log(this.queryInfo)  //有值
 ```
+正常的情况, 一个数组, 打印一次, 修改, 再打印一次, 控制台看到的都是修改后的结果
+
+```js
+const arrClone = [
+  30,
+  ['today', 'happy']
+]
+console.log(arrClone)   
+console.log(arrClone[1][0])
+arrClone[1][0] = 'yesterday'
+console.log(arrClone) 
+```
+
+![](./img/wonder3.png)
 
 #### 为什么 Vue 中一个组件的 data 选项必须是一个函数
 

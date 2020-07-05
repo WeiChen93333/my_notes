@@ -1,10 +1,10 @@
-### js 技巧与练习
+## js 技巧与练习
 
-#### 防抖与节流 (debounce & throttle)
+### 防抖与节流 (debounce & throttle)
 Throttling and debouncing are two widely-used techniques to improve the performance of code that gets executed repeatedly within a period of time.  
 我们无法控制用户触发事件的频率, 但是可以控制事件处理函数的执行. 加上防抖和节流的函数相当于在事件和函数执行之间加了一个控制层, 可以提升性能并改善用户体验.
 
-##### 防抖
+#### 防抖
 第一次触发事件后, 不立即执行函数, 而是进行计时. 如果计时过程中有其他触发，则重置计时; 否则执行函数。这样将一个连续的调用归为一个, 只有最后一次会执行. 多用于一些用户操作停止之后再执行事件处理函数
 
 **使用场景**
@@ -27,7 +27,7 @@ function debounce(fn, delay = 1000){
 window.addEventListener('resize', debounce(callback, 5000))   
 ```
 
-##### 节流
+#### 节流
 第一次触发后, 事件处理函数执行, 然后进行计时, 在这段时间内都不执行, 直到计时时间到, 执行, 然后再开始计时, 如此反复.
 
 **使用场景**
@@ -59,7 +59,7 @@ window.addEventListener('resize', throttle(callback, 2000))
 
 *节流防抖函数自己随手写的, 先这样吧*
 
-##### 文章与摘录
+#### 文章与摘录
 https://blog.bitsrc.io/understanding-throttling-and-debouncing-973131c1ba07
 
 To throttle a function means to ensure that the function is called at most once in a specified time period (for instance, once every 10 seconds). Conversely, a debounced function will ignore all calls to it until the calls have stopped for a specified time period. 
@@ -71,9 +71,11 @@ But what happens if E is triggered at a high frequency, for instance, 200 times 
 https://segmentfault.com/a/1190000018428170
 
 
-#### 深浅拷贝
-##### 浅拷贝
+### 深浅拷贝
+#### 浅拷贝
 原对象中, 如果属性是基本类型，拷贝值，如果是引用类型，拷贝内存地址; 这种情况下, 原对象和克隆的对象任何一方修改了内嵌引用类型的属性, 另一方都会受到影响
+
+##### 遍历赋值
 ```js
 const arr = ['3', {name: 'chen'}]
 const clone = []
@@ -86,10 +88,27 @@ arr[1] = 'change'
 console.log(clone) //[ '3', { name: 'change' } ]
 ```
 
-##### 深拷贝 - (暂兼容对象和数组)
-无限层级拷贝。深拷贝的对象无论修改基本数据类型和引用数据类型都不会影响原有的数据类型, 也就是除了和原对象长得一模一样, 其他没有任何关系了
+##### 数组的 slice concat 方法
 ```js
-//通过递归
+var a = [1,2,[3,4],{name:'ccy'}];
+var b = a.concat();
+a[3].name = 'hs';
+console.log(a[3],b[3]);
+```
+
+##### Object.assign
+```js
+var a = {age:18,name:'ccy',info:{address:'wuhan',interest:'playCards'}};
+var b = Object.assign(a);
+a.info.address = 'shenzhen';
+console.log(a.info,b.info);
+```
+
+#### 深拷贝 - (不能处理函数、正则, 不能复制属性描述符)
+无限层级拷贝。深拷贝的对象无论修改基本数据类型和引用数据类型都不会影响原有的数据类型, 也就是除了和原对象长得一模一样, 其他没有任何关系了
+
+##### 递归实现 
+```js
 function isObject(source){
   return source.constructor == Object
 }
@@ -113,6 +132,7 @@ function deepClone(source){
   })
   return clone
 }
+
 const obj = {
   simple: 'chen',
   complex: {
@@ -128,16 +148,25 @@ const arr = [
   30,
   ['today', 'happy']
 ]
-
 const arrClone = deepClone(arr)
-console.log(arrClone)    
-console.log(objClone == arr)
-console.log(objClone[1] == arr[1])
+console.log(arrClone) 
+console.log(arrClone == arr)
+console.log(arrClone[1] == arr[1])
 ```
 
+##### JSON 实现 (不能处理函数、正则等对象)
+```js
+function deepClone(source) {
+  let tmp = JSON.stringify(source)
+  let result = JSON.parse(tmp)
+  return result
+}
+```
+
+##### Object.create 实现
 
 
-#### 冻结对象
+### 冻结对象
 Object.freeze() 用于冻结对象，禁止对该对象的属性进行修改 (也可以对数组使用); 
 冻结了一个对象则不能向这个对象添加新的属性，不能删除已有属性或修改已有属性的值，也不能修改该对象已有属性的可枚举性、可配置性、可写性。此外，冻结一个对象后该对象的原型也不能被修改   
 Object.freeze() 是 "浅冻结", 只能冻结一层, 也就是第一层的属性, 如果存在嵌套, 如属性值为对象, 那么该对象属性不会冻结  
@@ -171,7 +200,7 @@ deepFreeze(menu)
 deepFreeze(obj)
 ```
 
-##### 文章与摘录
+#### 文章与摘录
 Vue性能提升之Object.freeze(): https://juejin.im/post/5d5e89aee51d453bdb1d9b61
 
 

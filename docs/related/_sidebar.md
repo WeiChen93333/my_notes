@@ -4,6 +4,7 @@
 * [node](/related/node.md)
 * [regexp](/related/regexp.md)
 * [storage](/related/storage.md)
+* [browser](/related/browser.md)
 * [performance](/related/performance.md)
 * [merge](/related/merge.md)
 * [interview](/related/interview.md)
