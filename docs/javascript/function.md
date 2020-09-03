@@ -4,7 +4,7 @@ In addition to its properties, a function contains executable code and state tha
 
 ## 函数定义与调用
 
-### 函数嵌套
+### 函数嵌套 / 回调函数
 
 #### 嵌套的特殊形式--递归
 - 函数是如何实现调用自身的--词法作用域向上访问
@@ -26,30 +26,32 @@ In addition to its properties, a function contains executable code and state tha
 {
   let a = 1
   window.module1 = function() {
-    console.log(a)
+    console.log(a) //2
   }
 }      
 {
   let a = 2
   window.module2 = function() {
-    console.log(a)
+    console.log(a) //1
   }
 }     
 setTimeout(()=>{
   window.module1()
 },1000)
 window.module2()
-//2
-//1
 ```
-
-### 回调函数
 
 ## 函数如何从外部获取信息
 ### 上下文 this 指向的对象
 this是JavaScript的一个关键字，是指函数执行过程中，自动生成的一个内部对象，是指当前的对象，只在当前函数内部使用。  
 this 既不指向函数自身也不指向函数的词法作用域，它实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数如何被调用。作用域链取决于函数的定义位置，而 this 取决于函数的调用位置 (或者说, 指向函数的调用者)。
 this 永远指向最后调用它的那个对象, 如果查找属性的时候找不到, 也不会继续向上一个对象寻找
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this  
+- 无论是否在严格模式下，在全局执行环境中（在任何函数体外部）this 都指向全局对象。
+- 在函数内部，this的值取决于函数被调用的方式。
+
+**官方文档赛高, MDN 赛高**
 
 #### 具体规则
 (1) 在独立函数调用时, 非严格模式下, 默认指向 window; 严格模式下 this 为 undefined;  

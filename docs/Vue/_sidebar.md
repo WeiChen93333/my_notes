@@ -1,4 +1,6 @@
 * [Home](/)
+* [core](/Vue/core.md)
+* [lifecycle](/Vue/lifecycle.md)
 * [monitor](/Vue/monitor.md)
 * [communication](/Vue/communication.md)
 * [directives](/Vue/directives.md)

@@ -1,4 +1,4 @@
-## js 技巧与练习
+## 技巧与练习
 
 ### 防抖与节流 (debounce & throttle)
 Throttling and debouncing are two widely-used techniques to improve the performance of code that gets executed repeatedly within a period of time.  
@@ -203,4 +203,223 @@ deepFreeze(obj)
 #### 文章与摘录
 Vue性能提升之Object.freeze(): https://juejin.im/post/5d5e89aee51d453bdb1d9b61
 
+### 函数柯里化
+掌握JavaScript函数的柯里化: https://segmentfault.com/a/1190000006096034?utm_source=sf-related
 
+### 模拟实现
+观察原型实现了什么, 然后使用自己的思路来实现, 一步步模仿完全 (尽量不用新功能模仿旧功能)
+#### bind
+- 返回改变了 this 值的函数 (该函数的 this 值此后无法更改/不会改变)
+- thisArg 外的其他参数可以在绑定时传入, 也可以在绑定后传入
+```js
+var obj = {name: 'chen'}
+objNew = {name: 'touch'}
+function testFunc(a, b){
+  console.log(this)
+  console.log(this.name)
+  this.a = a
+  this.b = b
+  this.gender = 'female'
+  return {surname: 'wei'}
+}
+Function.prototype.mockBind = function(thisArg){  
+  if(typeof this !== 'function'){
+    throw new TypeError(this + '.mockBind is not a function')
+  } 
+  if(thisArg === null || thisArg === undefined){
+    thisArg = window  
+  }else if(typeof thisArg != 'object'){
+    thisArg = Object(thisArg)  
+  }
+  const key = Symbol()
+  thisArg[key] = this 
+  var args = []
+  for(var i = 1; i < arguments.length; i++){
+    args.push(arguments[i])
+  }  
+  return function bound(){ 
+    for(var i = 0; i < arguments.length; i++){
+      args.push(arguments[i])
+    }  
+    if(this instanceof bound){
+      return new thisArg[key](...args)
+    }else{
+      return thisArg[key](...args)  
+    }
+  }
+}
+const result = testFunc.mockBind(obj, 1)
+result()
+console.log(result.mockBind(objNew)())
+console.log(result.call(objNew))
+const c = new result(2)
+console.log(c)
+console.log(new testFunc(1, 2))
+```
+
+#### apply
+- 改变当前函数 this 指向
+- 执行当前函数
+- 只检测前两位实参, 如果传入更多, 会被忽略
+- thisArg 不同情况 (非严格模式下，thisArg 不指定或者指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装。)
+- args 参数需要为数组 (如果是其他对象类型, 会被忽略; 如果不是对象类型, 会报错 Uncaught TypeError: CreateListFromArrayLike called on non-object);
+```js
+window.a = 'window-a'
+function testFunc(a, b){
+  console.log(this)
+  console.log(this.a)
+  console.log(a)  
+  return {surname: 'wei'}
+}
+var obj = {name: 'chen'}
+Function.prototype.mockApply= function(thisArg, args){  
+  //thisArg 不同情况 (非严格模式下，thisArg 不指定或者指定为 null 或 undefined 时会自动替换为指向全局对象，原始值会被包装。)
+  if(typeof this !== 'function'){
+    throw new TypeError(this + '.mockApply is not a function')
+  }
+  if(thisArg === null || thisArg === undefined){
+    thisArg = window  
+  }else if(typeof thisArg != 'object'){
+    thisArg = Object(thisArg)  
+  }  //if...else if 条件分支语句一旦命中后面的就不再判断
+  
+  //将调用 mockCall 的函数 (需要改变 this 指向的函数) 赋值给 thisArg 的属性
+  const key = Symbol() //新增一个独一无二的属性以免覆盖原有属性
+  thisArg[key] = this 
+
+  //获取真实参数
+  let result = null
+  if(typeof args !== 'object'){
+    throw new TypeError('CreateListFromArrayLike called on non-object')
+  }else if(typeof args !== 'array'){
+    result = thisArg[key]() //执行真实函数
+  }else{
+    result = thisArg[key](...args) //执行真实函数
+  }  
+  delete thisArg[key] //删除
+  return result  //返回真实函数的返回值
+} 
+console.log(testFunc.mockApply(undefined, []))
+testFunc.apply(undefined, [])
+```
+
+#### call
+- 改变当前函数 this 指向
+- 执行当前函数
+- 参数逐个传入
+```js
+var obj = {name: 'chen'}
+window.a = 'window-a'
+function testFunc(a, b){
+  console.log(this)
+  console.log(this.a)
+  console.log(a, typeof a)  
+  return {surname: 'wei'}
+}
+Function.prototype.mockCall = function(thisArg){ 
+  if(typeof this !== 'function'){
+    throw new TypeError(this + '.mockCall is not a function')
+  }
+  if(thisArg === null || thisArg === undefined){
+    thisArg = window  
+  }else if(typeof thisArg != 'object'){
+    thisArg = Object(thisArg)  
+  }
+  const key = Symbol()
+  thisArg[key] = this 
+
+  var args = []
+  for(var i = 1; i < arguments.length; i++){
+    args.push(arguments[i])
+  }  
+  const result = thisArg[key](...args)
+  delete thisArg[key]
+  return result
+}
+
+console.log(testFunc.mockCall())
+testFunc.call(null, null)
+testFunc.mockCall(null, null)
+```
+
+JavaScript深入之call和apply的模拟实现: https://juejin.im/post/6844903476477034510
+
+
+#### new
+
+- 即使构造函数是某个对象的属性, 其内部的 this 值始终指向新创建的对象, 而不是其所属的对象
+
+- 构造函数内没有以 this 作为前缀的变量, 不会包含在实例对象中; 构造函数自身的属性, 不会包含在实例对象中
+- 构造函数体中的 return 语句, 原始值会被忽略, 引用类型会返回 (这样, 使用 new 操作符就没有意义了)
+
+```js
+function mockNew(){
+  const obj = {}  //(1)
+  const Constructor = [].shift.apply(arguments)
+  obj.__proto__ = Constructor.prototype  //(2)
+  const result = Constructor.apply(obj, arguments)  //(3)     
+  return result instanceof Object ? result : obj  //(4)
+}
+function Creation(name, age, job){    
+  this.name = name
+  this.age = age
+  this.job = job     
+}
+const final = mockNew(Creation, 'chen', 27, 'programmer')
+console.log(final) //Creation { name: 'chen', age: 27, job: 'programmer' }
+```
+
+(1) 创建空对象 obj  
+(2) 将构造函数的原型对象与空对象的 \__proto__ 属性绑定  
+(3) 通过 apply 方法, 使得 obj 成为构造函数的调用者; 并执行构造函数    
+(4) 对构造函数的返回值进行判断 
+
+**构造函数内部如何判断是否使用了 new 关键字**  
+- instanceof 运算符: 在执行 new 操作时，构造函数的 prototype 赋值给了实例的 **proto** 属性。**`instanceof`** 用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。
+- new.target 属性: 在通过 new 运算符被初始化的函数或构造方法中，new.target 返回一个指向构造方法或函数的引用。在普通的函数调用中，new.target 的值是 undefined
+
+
+#### instanceof
+```js
+function mockInstanceof(left, right) {
+  left = left.__proto__
+  while(true) {
+    if (left === null) {
+      return false
+    }
+    if (left === right.prototype) {
+      return true
+    }
+    left = left.__proto__
+  }
+}
+```
+
+#### Object.create
+```js
+let demo = {
+  c : '123'
+}
+function mockObjectCreate(proto, props) {
+  function Fn(){} 
+  if(typeof proto !== 'object'){
+    throw new TypeError("Object prototype may only be an Object: " + proto);
+  }else if(proto === null){
+    Fn.prototype = undefined   //原生方法当 proto 传入 null 时, 创建出的对象的 __proto__ 为 undefined, 而我这里实现不了
+  }else{
+    Fn.prototype = proto
+    Fn.prototype.constructor = Fn
+  }      
+  const obj = new Fn()  
+  Object.defineProperties(obj, props)
+  return obj
+}
+const r = mockObjectCreate(demo, {
+  name: {
+    writable: true, 
+    enumerable: true,
+    value: "yu"
+  } 
+})
+console.log(r.__proto__)
+```

@@ -19,6 +19,8 @@
 
 ### 重写 ES6 方法  
 
+https://juejin.im/post/6859026583533912072#heading-9
+
 #### find    
 ```js
 Array.prototype.myfind = function(fn){
@@ -164,3 +166,18 @@ console.log(quickSort(arr));
 ```
 
 ### 乱序 (打乱数组)
+
+## 关于数组的知识
+### 类数组和数组的区别是什么？
+类数组是一个普通对象，而真实的数组是Array类型。  
+类数组拥有length属性，其它属性（索引）为非负整数; 但是不具有数组所有的方法  
+常见的类数组有: 函数的参数 arguments, DOM 对象列表(比如通过 document.querySelectorAll 得到的列表)  
+类数组可以转换为数组:
+```js
+Array.prototype.slice.call(arrayLike, start);
+
+[...arrayLike];
+
+Array.from(arrayLike);
+// 任何定义了遍历器（Iterator）接口的对象，都可以用扩展运算符转为真正的数组。
+```
