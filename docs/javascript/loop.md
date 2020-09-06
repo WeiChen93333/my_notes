@@ -10,7 +10,7 @@
 *数组自定义属性也是自有属性; 数组 'length' 为不可枚举自有属性*
 
 - for...in 可枚举
-- Object.getOwnPropertyNames 自身
+- Object.getOwnPropertyNames 自身, 但不包括Symbol值作为名称的属性
 - Object.keys 自身, 可枚举
 
 *(所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性；和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。)*

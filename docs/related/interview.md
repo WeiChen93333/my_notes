@@ -81,6 +81,10 @@ BFC 特性：
 4.计算 bfc 的高度时，浮动元素也参与计算；（清除浮动）
 5.bfc 就是页面上的一个独立容器，容器里面的子元素不会影响外面元素；
 
+
+
+### 浮动
+
 ### Flex 布局
 
 #### flex布局均匀分布后换行问题
@@ -193,9 +197,39 @@ toString是几个方案中，相对比较不错的方案。建议使用。toStri
 #### 纯函数
 
 ## Vue
+#### mvvm vs mvc
+
+### 响应式系统 /(单向)数据绑定
+“Reactivity, among JavaScript frameworks, is the phenomenon in which changes in the application state are automatically reflected in the DOM.”
+通俗的说, 就是一旦更新了 data 中的某个属性数据, 所有界面上直接使用或简洁使用了此属性的节点都会更新
+
+https://vuejs.org/v2/guide/reactivity.html
+
+![](./img/interview3.png)
+
+当一个 Vue 实例被创建时，它将 data 对象中的所有的属性加入到 Vue 的响应式系统中。当这些属性的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。  
+值得注意的是只有当实例被创建时就已经存在于 data 中的属性才是响应式的。如果你知道你会在晚些时候需要一个属性，但是一开始它为空或不存在，那么你仅需要设置一些初始值。  
+
+当实例创建后的数据观察阶段 data 选项的内容会添加到了一个对象中, 然后通过 Object.defineProperty(obj, key, value)的方法遍历, 并设置 get set 方法, 作为响应的基础, 这也就是为什么对象后来新增的属性不是响应式的原因, 它没有经过上述阶段  
+
+由于 JavaScript 的限制，Vue 不能检测数组和对象的变化。深入响应式原理中有相关的讨论。  
+
+Vue.set()(vuex用, 因为它不是vue的实例, 所以不能用后者)/this.$set()  
+Vue.set( target, key, value )  
+向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新属性，因为 Vue 无法探测普通的新增属性 (比如 this.myObject.newProperty = 'hi')。注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象。
+
+可以从生命周期的角度来说:
+初始化阶段: 通过 defineProperty 方法为 data 中的属性设置 getters/setters
+mounted 阶段: render 函数初次渲染, 生成 DOM, 过程中 touch 的属性的 getter 方法触发, 被 Watcher 收集为依赖
+数据更新阶段: 数据更新时, 属性的 setter 方法被触发, 通知 Watcher, Watcher 再触发 render函数重新渲染
+
 ### 单组件生命周期
 
 ### 父子组件的生命周期触发顺序
+
+### 单向数据流
+
+
 
 ### v-show和v-if的区别
 v-show  
@@ -219,11 +253,24 @@ https://vuejs.org/v2/api/#key
 
 https://michaelnthiessen.com/understanding-the-key-attribute/
 
+https://deepsource.io/blog/key-attribute-vue-js/
+
 The key special attribute is primarily used as a hint for Vue’s virtual DOM algorithm to identify VNodes when diffing the new list of nodes against the old list. Without keys, Vue uses an algorithm that minimizes element movement and tries to patch/reuse elements of the same type in-place as much as possible. With keys, it will reorder elements based on the order change of keys, and elements with keys that are no longer present will always be removed/destroyed.
 
 Children of the same common parent must have unique keys. Duplicate keys will cause render errors.
 
 当Vue用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue将不是移动DOM元素来匹配数据项的改变，而是简单复用此处每个元素
+
+**不使用 key (vue 不允许) / 使用 index 作为 key 时:**
+Vue prefers to reuse as much of the DOM as it can and try to make the manipulations at the data level and not at the DOM level.
+VUE 尽可能地减少对 DOM 的操作, 比如移动和替换; 只依据数据模型更改 DOM 展示的内容 (也就是文本节点)
+- 元素的样式, 会一直保留
+- 临时的 DOM 状态, 比如用户的输入, 如果通过 v-model 传递至 data model, 那么会一直停留在原地
+- 元素 / 组件不会销毁, 无法触发自定义指令的钩子 / 组件的生命周期钩子
+
+*为什么使用独有的 key 之后, 用户输入没有消失呢?*
+
+响应式 观察者 diff render function
 
 ### computed 和 watch 的区别和运用的场景
 computed  
@@ -252,21 +299,6 @@ watch: {
 
 https://vuejs.org/v2/guide/computed.html
 官方文档, 经典书籍, 赛高
-
-### 响应式系统
-https://vuejs.org/v2/guide/reactivity.html
-
-当一个 Vue 实例被创建时，它将 data 对象中的所有的属性加入到 Vue 的响应式系统中。当这些属性的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。  
-值得注意的是只有当实例被创建时就已经存在于 data 中的属性才是响应式的。如果你知道你会在晚些时候需要一个属性，但是一开始它为空或不存在，那么你仅需要设置一些初始值。  
-
-当实例创建后的数据观察阶段 data 选项的内容会添加到了一个对象中, 然后通过 Object.defineProperty(obj, key, value)的方法遍历, 并设置 get set 方法, 作为响应的基础, 这也就是为什么对象后来新增的属性不是响应式的原因, 它没有经过上述阶段  
-
-由于 JavaScript 的限制，Vue 不能检测数组和对象的变化。深入响应式原理中有相关的讨论。  
-
-Vue.set()(vuex用, 因为它不是vue的实例, 所以不能用后者)/this.$set()  
-Vue.set( target, key, value )  
-向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新属性，因为 Vue 无法探测普通的新增属性 (比如 this.myObject.newProperty = 'hi')。注意对象不能是 Vue 实例，或者 Vue 实例的根数据对象。
-**通过直接赋值新增改变属性, 在devtools会有体现  
 
 ### vue 异步更新的策略以及 nextTick 的用途和原理
 https://juejin.im/post/6844903609822363661#comment

@@ -255,6 +255,26 @@ https://juejin.im/post/5bcb2e295188255c55472db0
 (了解到组合继承就好, 然后是 extends, 和 es6 的 class 语法)
 
 
+
+## 对象的一些方法
+
+### preventExtension-seal-freeze
+
+https://til.cybertec-postgresql.com/post/2019-10-11-Object-preventExtension-vs-seal-vs-freeze/
+
+`Object.preventExtension`: 禁止对象添加属性
+
+`Object.seal`: 在对象上调用`Object.preventExtension(...)`并且把所有属性标记为`configurable: false`, 即**不能给对象添加新属性, 也不能重新配置对象的所有属性**
+
+`Object.freeze`: 在对象上调用`Object.seal(...)`并把所有属性标记为`writable: false`, 即"不能给对象添加属性, 也不能修改对象的属性值, 并且还不能重新配置该对象的所有属性, 基本上不能对该对象做任何事情".
+
+
+
+
+
+
+
+
 ## 关于对象的知识
 ### JS中区分对象和数组的四种方法
 
