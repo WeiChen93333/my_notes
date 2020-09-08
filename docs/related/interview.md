@@ -205,6 +205,9 @@ toString是几个方案中，相对比较不错的方案。建议使用。toStri
 
 https://vuejs.org/v2/guide/reactivity.html
 
+script start,  async2 end , async1 end, error,  async1, script end ; promise1, promise2, async1 success
+'北歌', 
+
 ![](./img/interview3.png)
 
 当一个 Vue 实例被创建时，它将 data 对象中的所有的属性加入到 Vue 的响应式系统中。当这些属性的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。  
@@ -400,13 +403,14 @@ Cache-Control > Expires(http1.0产物, 受本地时间影响) > ETag(http1.1出�
 
 ### 垃圾回收
 
+### 浏览器常见兼容问题
 
 ## 网络 (http)
 
 ### 原生Ajax和axios的区别，Ajax怎么发送http请求的？
 
 ## 安全
-**xss 攻击 || crsf 攻击**
+**xss 攻击 || csrf 攻击**
 
 https://juejin.im/post/6844903502968258574#comment
 
