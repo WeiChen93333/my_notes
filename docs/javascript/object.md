@@ -80,7 +80,9 @@ console.log(person1, person2)
 
 #### 构造函数 Constructor
 
-  - 函数对象天生自带一个属性 prototype, 它的值是一个对象. 原型对象包含 constructor 属性, 指向自身, 这个属性可读可写; 原型对象包含 \__proto__ 属性, 指向 Object.prototype
+  - 每个构造函数都有一个属性 prototype, 它的值是一个对象. 所有函数的默认原型都是 Object 的实例. 原型对象包含 constructor 属性, 指向自身, 这个属性可读可写; 包含 \__proto__ 属性
+
+    - 内置的普通函数除外, 如 Object.prototype.toString.prototype 为 undefined; 如果 new Object.prototype.toString() 会报错 (Uncaught TypeError: Object.prototype.toString is not a constructor)  
 
   - 构造函数是函数对象, 同时拥有函数和对象的特质. 构造函数和普通函数只存在调用方式的不同, 构造函数调用需要使用 new 关键字; 另外, 构造函数名字首字母大写作为区分
 
@@ -203,7 +205,7 @@ console.dir(Object.__proto__.__proto__.__proto__) //(5) -- null
 > 原型链是对象属性访问方式 (作用域链是变量访问方式)
 
 原型链是一种机制，指的是 JavaScript 每个对象都有一个内置的 \__proto__ 属性指向创建它的构造函数的 prototype 属性。
-由于 \__proto__ 是任何对象都有的属性, 而 js 里万物皆对象, 所以最终会形成一条 \__proto__ 连起来的链条, 递归访问 \__proto__ 必须最终到头, 并且值是 null  
+由于 \__proto__ 是任何对象都有的属性, 最终会形成一条 \__proto__ 连起来的链条, 递归访问 \__proto__ 必须最终到头, 并且值是 null  
 当 js 引擎查找对象的属性时, 先查找对象本身是否存在该属性, 如果不存在, 会在原型链上查找, 但不会查找自身的 prototype
 
 ##### 以自定义构造函数创建的对象为切入点进行分析
@@ -253,6 +255,14 @@ console.dir(obj2.__proto__ == obj1) //true
 https://juejin.im/post/5bcb2e295188255c55472db0
 
 (了解到组合继承就好, 然后是 extends, 和 es6 的 class 语法)
+
+### 基类--子类
+
+构造函数可以产生实例对象
+
+构造函数还可以产生构造函数对象 (震惊吧, 也就是父类与子类)
+
+
 
 
 

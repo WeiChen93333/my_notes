@@ -1,4 +1,44 @@
-## 技巧与练习
+## 经典算法与逻辑
+
+### 打印一百以内质数
+
+```js
+for(var i = 2; i <= 100; i++){
+  var count = 0
+  for(var j = 1; j <= i; j++){
+    if(i % j == 0){ count++ }
+  }  
+  if(count == 2){ console.log(i) }
+}
+```
+
+
+
+
+
+### 输入一个年份，判断是平年还是润年
+能被4整除且不能被100整除的为闰年。如2004年就是闰年，1900年不是闰年。
+世纪年能被400整除的是闰年，如2000年是闰年，1900年不是闰年。
+对于数值很大的年份,这年如果能被3200整除,并且能被172800整除则是闰年。如172800年是闰年，86400年不是闰年，因为虽然能被3200整除，但不能被172800整除。
+```js
+//me
+var year = prompt("请输入一个年份");
+if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+  alert("今年是闰年");
+}else if (year % 3200 == 0 && year % 172800 == 0) {
+  alert("今年是闰年");
+}
+else {
+  alert("今年是平年");
+}
+
+//te
+(year%4 == 0 && year%100 != 0) || year % 400 == 0 ? console.log(year+"是润年") : console.log(year+"是平年");
+```
+
+
+
+##  技巧与练习
 
 ### 防抖与节流 (debounce & throttle)
 Throttling and debouncing are two widely-used techniques to improve the performance of code that gets executed repeatedly within a period of time.  
