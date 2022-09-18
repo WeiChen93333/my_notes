@@ -16,6 +16,27 @@
 
 https://weichen93333.github.io/my_notes/#/css/mobile
 
+## HTML
+
+### HTML5 新特性
+- 标签的语义化  header,footer,section,nav,aside,article...  
+- 增强型表单(input的type: Color,date,email,number,range,tel)
+- 音视频
+- 本地存储
+- canvas
+- 地理位置  getCurrentPosition(); watchPosition(); clearWatch();
+- 扡拽
+- 新事件  Onresize:调整窗口大小; Ondrag：拖动元素; onscroll; Onmousewheel: 鼠标滚轮; onplay; onpause; 
+- websocket
+- webwoker
+
+### 语义化
+所谓，语义化的标签，说明让标签有自己的含义。也是近十年。最典型的栗子就是header，footer等，它可以让你在没有样式的情况下，就大概能想到，他就是个头部或者底部。他存在的意义，就是让前端开发人员，在开发过程中，更容易去阅读代码，以及明白这些代码的意义。
+它的好处是：
+1.能够更好地展示内容结构
+2.便于团队的维护与开发
+3.有利于SEO，爬虫可以分析每个关键词的权重。
+4.方便其他设备解析 (如屏幕阅读器)
 
 ### SEO / 搜索引擎优化
 一种利用搜索引擎的搜索规则来提高目前网站在有关搜索引擎内的自然排名的方式。他的实现原来分别为，页面抓取，分析入库，检索排序。
@@ -38,6 +59,47 @@ https://juejin.im/post/6844903581649207309  (需要注意: 权重部分有误, �
 ```
 
 ## CSS
+### CSS3 新特性
+- 过渡 transition
+- 动画 animation
+- 形状转换 transform
+- 新增选择器 (绝大部分为伪类选择器), 如 :first-of-type, :nth-child(n)
+- 阴影 box-shadow
+- 边框图片 border-image
+- 支持 RGBA, 如不兼容则需要分开写 RGB, opacity
+- 引入flex/grid布局
+
+
+### 盒子模型
+
+**W3C 盒模型(标准盒模型)**  
+通过 box-sizing: content-box 设置; style 中书写的 width / height 值为 content 盒子宽高。  
+
+**IE 盒模型(怪异盒模型)**  
+通过 box-sizing: border-box 设置; style 中书写的 width / height 值为 content+padding+border 宽高之和。
+
+### 选择器权重
+单选择器: !important > 行内style > id > class/伪类 > 标签选择器/属性选择器
+### BFC
+
+BFC（Block Formatting Context）块级格式化上下文，是 Web 页面中盒模型布局的 CSS 渲染模式，指一个独立的渲染区域或者说是一个隔离的独立容器。
+
+**下列方式会创建块格式化上下文 / 触发 BFC：**
+- 根元素 html
+- 浮动元素，float 除 none 以外的值
+- 定位元素，position（absolute，fixed）
+- display 为以下其中之一的值 inline-block，table-cell，table-caption
+- display 为 flow-root, 可以创建无副作用的 BFC
+- overflow 除了 visible 以外的值（hidden，auto，scroll）
+- Flex items (flex 容器的直接子元素)
+
+**BFC 特性：**
+1.内部的 Box 会在垂直方向上一个接一个的放置；
+2.垂直方向上的距离由margin 决定；（解决外边距重叠问题）
+3.bfc 的区域不会与 float 的元素区域重叠；（防止浮动文字环绕）
+4.计算 bfc 的高度时，浮动元素也参与计算；（清除浮动）
+5.bfc 就是页面上的一个独立容器，容器里面的子元素不会影响外面元素；
+
 
 
 ### 浮动
@@ -73,9 +135,139 @@ float 属性指定一个元素应沿其容器的左侧或右侧放置，允许�
 
 - 在浮动元素后增加 <br clear="all" />
 
+  
+
+### Flex 布局
+http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+
+- 设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。
+- flex-basis 属性优先于 width 属性; flex-basis 百分比相对容器的 content-box
+
+#### flex布局均匀分布后换行问题
+
+### 两栏布局 (左边固定，右边自适应)
+
+- flex - 设置 right {flex: 1}
+- float - 左右 {float: left}; 右{width: calc(100%-左width)}
+
+
+### 三栏布局
+
+### 水平垂直居中
+https://juejin.im/post/6858826987688722446
+
+#### 水平居中
+
+- 居中对齐margin:0 auto; (右对齐margin-left:auto; 左对齐margin-right:auto)
+
+- 将元素转换为 inline/inline-block，然后其父元素加上 text-align: center;
+*text-align CSS属性定义行内内容（例如文字）如何相对它的块父元素对齐。text-align 并不控制块元素自己的对齐，只控制它的行内内容的对齐。*
+
+#### 水平垂直居中
+
+--1
+子元素相对于父元素绝对定位，并且margin值减去自己宽高的一半（需知道子元素宽高）
+子元素{top: 50%; left: 50%; margin-left: -half self-width; margin-top: -half self-height}
+*定位相对于父元素，移动50%是移动父元素width的一半
+
+--2
+子元素相对于父元素绝对定位，并且margin值为auto（不需知道子元素宽高）
+```css
+.divfather{
+      background-color: green;
+      width: 80px;
+      height: 30px;
+      margin-bottom: 5px;
+      position: relative;
+    }
+    .divson{
+      background-color: red;
+      width: 40px;
+      height: 10px;
+      margin: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+```
+
+Note: left属性定义了定位元素的左外边距边界与其包含块左边界之间的偏移
+必须将left right 同时设置为0，此时auto因设为自动两边而同等填充，直到接触包含块边界，从而满足left right为0，这样就实现了元素居中。
+*同时设置margin和left等时，先是margin，然后移动。margin是元素自身属性，left等移动属性居后
+
+--3
+diplay：table-cell
+该方式是将元素转换成表格样式，再利用表格的样式来进行居中
+父元素{display: table-cell; vertical-align: middle}
+子元素{margin: auto}
+
+--4 与--1 类似
+绝对定位和transfrom
+元素{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)}
+*translate相对于自己，移动50%是移动自己宽高的一半
+
+--5
+css3中的flex属性
+父元素{display: flex; justify-content: center; align-items: center}
+
+
+
+### 超出省略号
+
+```html
+<!-- 单行 -->
+{
+  width:200px; 
+  border:1px solid #000000;
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis;
+}
+```
+
+```html
+<!-- 多行 (以两行为例; 其他行数改变 height 和 -webkit-line-clamp 即可) -->
+{
+  width:400px;  
+  border:1px solid #ccc;
+  line-height:30px;
+  height:60px;
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  
+}
+```
+
+
+
 ### 一般简单的动画为什么用css3的animation而不是用position动画？
 我：position动画会脱离文本流，动画性能消耗大，而css3动画基于帧动画，浏览器可对动画做优化，性能提高不少
 
+
+
+### 前端隐藏元素: (1)display: none; (2)visibility: hidden; (3)opacity: 0 的区别
+
+https://juejin.im/post/5cf860ade51d4550a629b23b
+
+(1)display: none  
+- 元素存在 dom 结构中, 可以被获取;
+- 元素不会被渲染(不占用页面空间), 属性值切换会引起浏览器重排和重绘
+- 不可交互(触发事件)
+
+(2)visibility: hidden  
+- 元素存在 dom 结构中, 可以被获取;
+- 元素会被渲染(占用页面空间)
+- 不可交互
+
+(3)opacity: 0  
+- 元素存在 dom 结构中, 可以被获取;
+- 元素会被渲染(占用页面空间)
+- 可以交互
 
 ### 实践
 
@@ -101,10 +293,75 @@ float 属性指定一个元素应沿其容器的左侧或右侧放置，允许�
 
 ## JavaScript
 
+### DOM 事件流的三个阶段
 
+- 一个 DOM 事件发生时, 会自根元素发出事件流, 一直到达 目标元素的直接父元素, 是事件捕获阶段, 注册在该阶段的事件处理函数会执行 (addEventListener 的第三个参数为 true); 接着到达事件目标位置, 也就是目标阶段; 然后原路返回, 是事件冒泡阶段, 注册在该阶段的事件处理函数会执行.
+- 当一个元素上, 捕获和冒泡阶段都注册了事件时, 除了目标元素(事件触发元素), 都会在相应阶段执行函数; 而目标元素, 则是按照注册的顺序, 捕获写在前面, 就先执行捕获, 否则相反
+- event.target 是事件触发元素, event.currentTarget 是事件注册元素, 两者可能不一致
+
+### 事件委托
+
+https://www.cnblogs.com/soyxiaobi/p/9498357.html
+
+- “事件代理”即是把原本需要绑定在子元素上的响应事件（click、keydown......）委托给父元素，让父元素担当事件监听的职务。
+- 事件代理的原理是事件的捕获/冒泡
+- 优点:
+  1. 提高性能:每一个函数都会占用内存空间，只需添加一个事件处理程序代理所有事件,所占用的内存空间更少。
+  2. 动态监听:使用事件委托可以自动绑定动态添加的元素,即新增的节点不需要主动添加也可以一样具有和其他元素一样的事件。
      
 
 ### ES6
+
+#### 模块化
+
+##### 基本
+
+export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
+
+```js
+** 定义模块 math.js **/
+var basicNum = 0;
+var add = function (a, b) {
+    return a + b;
+};
+export { basicNum, add };
+
+/** 引用模块 **/
+import { basicNum, add } from './math';
+function test(ele) {
+    ele.textContent = add(99 + basicNum);
+}
+
+//也可以用 export default
+// export-default.js
+export default function () {
+  console.log('foo');
+}
+
+// import-default.js
+import customName from './export-default';
+customName(); // 'foo'
+```
+
+
+
+##### 与 CommonJS 的区别
+
+CommonJS 基本语法：
+
+- 暴露模块：`module.exports = value`或`exports.xxx = value`
+- 引入模块：`require(xxx)`,如果是第三方模块，xxx为模块名；如果是自定义模块，xxx为模块文件路径
+
+加载某个模块，其实是加载该模块的module.exports属性。 require命令用于加载模块文件。require命令的基本功能是，读入并执行一个JavaScript文件，然后返回该模块的exports对象。如果没有发现指定模块，会报错。 
+
+**CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。**
+
+**CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。**
+
+- 什么是运行时加载，什么是编译输出？
+- 在后端开发当中，只需要做到一次加载，因此在启动服务器中进行加载即可，对于CommonJS的设计当中符合后端的这种开发理念，然后这种效果带来了很大的便利性，在前端开发也是需要模块化加载方式，可是，前端的加载方式跟后端不一致，如果采用CommonJS相同的加载方式，前端性能会大打折扣，比如网页假死，以及难以改变引入模块的变量，因此，在编译阶段，先将模块按需进行处理，生成接口，在引入模块之后进行使用时，可以很方便的调用接口
+
+
 
 #### let，const 和 var 的区别
 1）局部作用域
@@ -150,6 +407,18 @@ forEach()方法不会返回执行结果，而是undefined。也就是说，forEa
 
 ### 手写深度遍历节点
 
+
+#### 判断类型
+typeof 对于原始类型来说，除了 null 都可以显示正确的类型。但是对于对象来说，除了函数都会显示 object，所以他的作用，仅仅只能判断原始类型，判断不了对象。
+instanceof，用于判断一个变量是否某个对象的实例，内部机制是通过原型链来判断的。他的确能判断是否类型的是否正确。但一点值得注意，instanceof 检测的是原型，原型链上，每一个类型，都会返回true。所以，只能用来判断两个对象是否属于实例关系， 而不能判断一个对象实例具体属于哪种类型。
+constructor, 是原型prototype的一个属性，当函数被定义时候，js引擎会为函数添加原型prototype，并且这个prototype中constructor属性指向函数引用， 因此重写prototype会丢失原来的constructor。
+但是他也有明显的缺陷：
+1：null 和 undefined 无constructor，这种方法判断不了。
+2：还有，如果自定义对象，开发者重写prototype之后，原有的constructor会丢失，因此，为了规范开发，在重写对象原型时一般都需要重新给 constructor 赋值，以保证对象实例的类型不被篡改。
+toString是几个方案中，相对比较不错的方案。建议使用。toString() 是 Object 的原型方法，调用该方法，默认返回当前对象的 [[Class]] 。这是一个内部属性，其格式为 [object Xxx] ，其中 Xxx 就是对象的类型。
+
+#### 类型转换
+
 #### 高阶函数
 #### 柯里化函数
 #### 纯函数
@@ -165,6 +434,15 @@ forEach()方法不会返回执行结果，而是undefined。也就是说，forEa
 - 保存多次使用的全局变量
 
 ## Vue
+### mvvm
+
+MVVM模式是通过以下三个核心组件组成，每个都有它自己独特的角色：
+
+- Model - 应用的数据及业务逻辑，为开发者编写的业务代码
+
+- View - 应用的展示效果，各类UI组件，由 template 和 css 组成的代码
+
+- ViewModel - 扮演“View”和“Model”之间的桥梁，帮忙完成数据绑定和 DOM 事件监听, 负责将数据与视图关联起来, Vue 就是一个 ViewModel
 
 
 
@@ -196,12 +474,89 @@ mounted 阶段: render 函数初次渲染, 生成 DOM, 过程中 touch 的属性
 
 
 
+### 双向数据绑定的实现原理
+
+双向绑定技术，不是 Vue 独有的特性，而是一个公共的解决方案，它目前已经被广泛的框架运用。
+
+[原生 JS] 通过 JavaScript 控制 DOM 的展示，就是数据（Data）到模板（DOM）的绑定，这就是数据单向绑定。而双向绑定就是在这个基础上，又扩展了反向的绑定效果，就是模板到数据的绑定。
+
+```js
+<p></p>
+const data = { value: 'hello' }
+document.querySelector('p').innerText = data.value;
+
+
+<input onkeyup="change(event)" />
+<p></p>
+
+<input onkeyup="change(event)" />
+const data = { value: '' }
+const change = e => {
+    // 更新输入值
+    data.value = e.target.value;
+    // 且，同步值的展示
+    document.querySelector('p').innerText = data.value
+}
+```
 
 
 
+![](./img/interview4.png)
+
+vue 中有三种数据绑定形式
+
+- 插值形式 -- {{ data }}
+- v-bind -- :class="class"
+- v-model
+
+vue 通过数据劫持实现了数据的响应式, 也就是单向绑定, 当数据发生变化时, 视图会自动更新; 同时, vue 通过监听 DOM 事件, 根据用户操作调用事件函数更改数据, 这样就形成了双向数据绑定
+
+vue 提供 v-model 这个结合了 v-bind 和事件的语法糖, 让使用者可以更加简单地使用双向绑定 
 
 
 
+### 虚拟 Dom
+
+#### 原理
+
+- 用 JavaScript 对象模拟真实 DOM 树，对真实 DOM 进行抽象；
+- diff 算法 — 比较两棵虚拟 DOM 树的差异；
+- pach 算法 — 将两个虚拟 DOM 对象的差异应用到真正的 DOM 树。
+
+#### 优点
+
+- 无需手动操作 DOM
+- 减少 DOM 操作, 提升性能
+
+
+
+### 单组件生命周期
+
+每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做**生命周期钩子**的函数，这给了用户在不同阶段添加自己的代码的机会。
+
+created { 发送 http 请求}
+
+mounted {操作 DOM}
+
+beforeDestroy {去除全局的东西, 如事件总线接收器, 给 window 添加的方法, 定时器}
+
+### 父子组件的生命周期触发顺序
+
+**父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted。**
+
+子组件数据更新后, 先触发父组件的 beforeUpdate&updated 钩子
+
+
+
+### 单向数据流
+
+父组件通过 props 向子组件传递的数据， 不要在子组件中直接更改，否则将导致数据混乱和难以追踪。子组件可以将 prop 属性保存至 data 中， 或者使用计算属性。
+
+### v-model
+
+v-bind 和表单元素自定义事件的语法糖
+
+### 组件传值
 
 
 
@@ -313,7 +668,9 @@ nextTick: 在修改数据之后立即使用这个方法，可以获取更新后�
 
 
 
-
+### 为何组件中 data 必须是函数
+因为对象为引用类型，当复用组件时，由于所有组件的 data 都指向同一个对象，当在一个组件中修改 data 时，其他组件中的 data 会同时被修改；而使用返回对象的函数，由于每次返回的都是一个新对象（Object的实例），引用地址不同，则不会出现这个问题。
+new Vue() 选项对象中的 data 可以是对象, 因为其产生的实例是不会被复用的 (根实例只能有一个)
 
 
 
@@ -649,6 +1006,78 @@ configureWebpack: config => {
 
 https://blog.csdn.net/LuckyWinty/article/details/103268296
 
+### 从输入URL到页面加载发生了什么？ 
+
+#### 查询缓存
+浏览器查询是否有当前页面的资源缓存, 如果有, 直接取得资源, 开始解析渲染过程; 否则进入下一步  
+(http 缓存是客户端缓存，浏览器作为客户端接受到服务端响应后，对于响应首部字段进行解析，分析出相应的缓存规则，将资源按规则进行缓存，再次请求时如果命中缓存则直接读取本地缓存不再发出请求。)
+
+http 缓存可以简单的划分成两种类型：强缓存（200 from cache）与协商缓存（304）
+- 强缓存（200 from cache）时，浏览器如果判断本地缓存未过期，就直接使用，无需发起http请求
+- 协商缓存（304）时，浏览器会向服务端发起http请求，然后服务端告诉浏览器文件未改变，让浏览器使用本地缓存
+
+对于协商缓存，使用Ctrl + F5强制刷新可以使得缓存无效
+但是对于强缓存，在未过期时，必须更新资源路径才能发起新的请求（更改了路径相当于是另一个资源了，这也是前端工程化中常用到的技巧）
+
+#### DNS 解析
+在网络世界，你肯定记得住网站的名称，但是很难记住网站的 IP 地址，因而也需要一个地址簿，就是 DNS 服务器  这一步在于获取 URL 对应的 IP 地址  
+如果引入了 CDN, 那么情况更加复杂一些...  
+如何给女朋友解释什么是CDN？https://juejin.im/post/5d478c48e51d453c135c5a5c#heading-1
+
+#### 建立 TCP 连接
+获取地址后, 客户端想要与服务器间通信并传递消息需要开启 TCP 连接  
+首先，判断是不是 https 的，如果是，则HTTPS其实是HTTP + SSL / TLS 两部分组成，也就是在HTTP上又加了一层处理加密信息的模块。服务端和客户端的信息传输都会通过TLS进行加密，所以传输的数据都是加密后的数据。
+接着, 进行三次握手, 建立 TCP 连接  
+- (1) 客户端：hello，你是server么？(客户端发出连接请求)
+- (2) 服务端：hello，我是server，你是client么 (服务端收到请求, 同意连接)
+- (3) 客户端：yes，我是client (客户端确认)
+
+https://juejin.im/post/6844903958624878606#comment
+https://juejin.im/post/6844903834708344840
+
+如果是 https, 则还需要额外的 SSL 握手过程
+
+#### 发送 HTTP 请求 & 服务器处理请求并返回 HTTP 报文
+TCP 连接建立后，浏览器就可以利用 HTTP／HTTPS 协议向服务器发送请求了。  
+服务器接受到请求，就解析请求头，如果头部有缓存相关信息如 if-none-match 与 if-modified-since，则验证缓存是否有效，若有效则返回状态码为 304，若无效则重新返回资源，状态码为 200.
+
+#### 浏览器下载资源, 解析代码, 渲染页面
+浏览器下载 HTML, CSS, JS 资源后, 如果服务器有 gzip 压缩，浏览器先解压, 解压完成后开始渲染页面
+这一部分比较重要 (是我能接触到, 能操作的, 能理解的; 并且能够优化, 有用的)
+
+##### gzip 压缩
+gzip 是一种压缩格式, 可以在进行 webpack 配置, 从而在打包时生成 .gz 文件, 这样服务器就不需要进行压缩, 给服务器省一点力气.
+
+##### 页面渲染
+
+![](./img/interview2.png)
+
+- HTML parser：HTML解析器，其本质是将HTML文本解释成DOM tree。
+- CSS parser：CSS解析器，其本质是将 DOM 中各元素对象加入样式信息
+- JavaScript 引擎：专门处理JavaScript脚本的虚拟机，其本质是解析JS代码并且把逻辑（HTML和CSS的操作）应用到布局中，从而按程序要的要求呈现相应的结果
+- DOM tree: 文档对象模型树，也就是浏览器通过HTMLparser解析HTML页面生成的HTML树状结构以及相应的接口。
+- render tree：渲染树，也就是浏览器引擎通过DOM Tree和CSS Rule Tree构建出来的一个树状结构，和dom tree不一样的是，它只有要最终呈现出来的内容，像或者带有display:none的节点是不存在render tree中的。
+- layout：也叫reflow 重排，渲染中的一种行为。当rendertree中任一节点的几何尺寸发生改变了，render tree都会重新布局。
+- repaint：重绘，渲染中的一种行为。render tree中任一元素样式属性（几何尺寸没改变）发生改变了，render tree都会重新画，比如字体颜色、背景等变化。
+
+##### 资源外链的下载
+在解析 html 时，会遇到一些资源连接，此时就需要进行单独处理了
+简单起见，这里将遇到的静态资源分为一下几大类（未列举所有）
+CSS样式资源
+JS脚本资源
+img图片类资源
+
+
+#### 连接结束
+四次挥手
+- (1) 主动方：我已经关闭了向你那边的主动通道了，只能被动接收了
+- (2) 被动方：收到通道关闭的信息
+- (3) 被动方：那我也告诉你，我这边向你的主动通道也关闭了
+- (4) 主动方：最后收到数据，之后双方无法通信
+
+
+
+## 完
 
 
 

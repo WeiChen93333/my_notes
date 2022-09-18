@@ -173,9 +173,8 @@ export default {
 - Promise.race
 race 方法的参数为数组, 数组成员为 Promise 实例, 返回值为最先 resolve 的值
 
-- Promise.all
+- Promise.all 存在错误
 all 方法提供了并行执行异步操作的能力，并且在所有异步操作执行完后才执行回调。
-all 方法的参数为数组, 数组成员为 Promise 实例, 返回值为一个数组, 数组按各个 promise 的 resolve 顺序推入终值
 
 ##### 实例方法
 - promise.then
